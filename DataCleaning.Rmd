@@ -1,0 +1,75 @@
+---
+title: "Data Cleaning"
+author: "Gracie Lovell"
+date: "2026-01-29"
+output: pdf_document
+---
+
+# Creation of Database
+
+```{r}
+library(tidyverse)
+library(readr)
+library(dplyr)
+```
+
+
+## Philadelphia Eagles
+
+```{r}
+eagles_raw <- read_csv("~/Capstone/eagles_2024.txt")
+eagles_clean <- eagles_raw
+```
+
+### Renaming & Removing Columns
+
+```{r}
+eagles_clean <- eagles_clean %>%
+  rename(Time = ...4) %>%
+  select(-...5) %>%
+  rename(Win_Loss = ...6) %>%
+  rename(Overtime = OT) %>%
+  rename(Record = Rec) %>%
+  rename(Home_Away = ...9) %>%
+  rename(Opponent = Opp...10) %>%
+  rename(Points_Scored = Tm) %>%
+  rename(Points_Allowed = Opp...12) %>%
+  rename(Off_First_Downs = `1stD...13`) %>%
+  rename(Off_Total_Yards = TotYd...14) %>%
+  rename(Off_Passing_Yards = PassY...15) %>%
+  rename(Off_Rushing_Yards = RushY...16) %>%
+  rename(Turnovers_Lost = TO...17) %>%
+  rename(Def_First_Downs = `1stD...18`) %>%
+  rename(Def_Total_Yards = TotYd...19) %>%
+  rename(Def_Passing_Yards = PassY...20) %>%
+  rename(Def_Rushing_Yards = RushY...21) %>%
+  rename(Turnovers_Gained = TO...22) %>%
+  select(-Offense, -Defense, -`Sp. Tms`)
+```
+
+### Removing "Bye Week" and "Playoffs"
+
+```{r}
+eagles_clean <- eagles_clean %>%
+  filter(Opponent != "Bye Week") %>%
+  filter(Date != "Playoffs")
+```
+
+### Fixing NA Values
+
+```{r}
+eagles_clean <- eagles_clean %>%
+  mutate(Overtime = ifelse(is.na(Overtime), "No", "Yes")) %>%
+  mutate(Home_Away = ifelse(is.na(Home_Away), "Home", "Away")) %>%
+  mutate(Turnovers_Lost = ifelse(is.na(Turnovers_Lost), 0, Turnovers_Lost)) %>%
+  mutate(Turnovers_Gained = ifelse(is.na(Turnovers_Gained), 0, Turnovers_Gained))
+```
+
+### Cleaned CSV file
+
+```{r}
+summary(eagles_clean)
+
+write_csv(eagles_clean, "eagles_cleaned.csv")
+```
+
