@@ -13,18 +13,15 @@ library(readr)
 library(dplyr)
 ```
 
-
-## Philadelphia Eagles
-
 ```{r}
-eagles_raw <- read_csv("~/Capstone/eagles_2024.txt")
-eagles_clean <- eagles_raw
+team_raw <- read_csv("~/Field Vision Analytics/Raw Data/eagles_raw.txt")
+team_clean <- team_raw
 ```
 
 ### Renaming & Removing Columns
 
 ```{r}
-eagles_clean <- eagles_clean %>%
+team_clean <- team_clean %>%
   rename(Time = ...4) %>%
   select(-...5) %>%
   rename(Win_Loss = ...6) %>%
@@ -50,7 +47,7 @@ eagles_clean <- eagles_clean %>%
 ### Removing "Bye Week" and "Playoffs"
 
 ```{r}
-eagles_clean <- eagles_clean %>%
+team_clean <- team_clean %>%
   filter(Opponent != "Bye Week") %>%
   filter(Date != "Playoffs")
 ```
@@ -58,9 +55,13 @@ eagles_clean <- eagles_clean %>%
 ### Fixing NA Values
 
 ```{r}
-eagles_clean <- eagles_clean %>%
+team_clean <- team_clean %>%
   mutate(Overtime = ifelse(is.na(Overtime), "No", "Yes")) %>%
-  mutate(Home_Away = ifelse(is.na(Home_Away), "Home", "Away")) %>%
+  mutate(Home_Away = case_when(
+    is.na(Home_Away) ~ "Home",
+    Home_Away == "N" ~ "Neutral",
+    Home_Away == "@" ~ "Away"
+  )) %>%
   mutate(Turnovers_Lost = ifelse(is.na(Turnovers_Lost), 0, Turnovers_Lost)) %>%
   mutate(Turnovers_Gained = ifelse(is.na(Turnovers_Gained), 0, Turnovers_Gained))
 ```
@@ -68,8 +69,8 @@ eagles_clean <- eagles_clean %>%
 ### Cleaned CSV file
 
 ```{r}
-summary(eagles_clean)
+summary(team_clean)
 
-write_csv(eagles_clean, "eagles_cleaned.csv")
+write_csv(team_clean, "eagles_cleaned.csv")
 ```
 
