@@ -1,0 +1,130 @@
+---
+title: "Automated Data Cleaning"
+author: "Gracie Lovell"
+date: "2026-02-03"
+output: pdf_document
+---
+
+```{r}
+library(tidyverse)
+library(readr)
+library(dplyr)
+library(stringr)
+```
+
+# Cleaning Function
+
+```{r}
+clean_team_data <- function(file_path){
+  team_name <- str_remove(basename(file_path), "_raw.txt")
+  
+  team_raw <- read_csv(file_path)
+  
+# Renaming & Removing Columns
+  team_clean <- team_raw %>%
+    rename(Time = ...4) %>%
+    select(-...5) %>%
+    rename(Win_Loss = ...6) %>%
+    rename(Overtime = OT) %>%
+    rename(Record = Rec) %>%
+    rename(Home_Away = ...9) %>%
+    rename(Opponent = Opp...10) %>%
+    rename(Points_Scored = Tm) %>%
+    rename(Points_Allowed = Opp...12) %>%
+    rename(Off_First_Downs = `1stD...13`) %>%
+    rename(Off_Total_Yards = TotYd...14) %>%
+    rename(Off_Passing_Yards = PassY...15) %>%
+    rename(Off_Rushing_Yards = RushY...16) %>%
+    rename(Turnovers_Lost = TO...17) %>%
+    rename(Def_First_Downs = `1stD...18`) %>%
+    rename(Def_Total_Yards = TotYd...19) %>%
+    rename(Def_Passing_Yards = PassY...20) %>%
+    rename(Def_Rushing_Yards = RushY...21) %>%
+    rename(Turnovers_Gained = TO...22) %>%
+    select(-Offense, -Defense, -`Sp. Tms`) %>%
+  
+# Removing "Bye Week" and "Playoffs"
+    filter(Opponent != "Bye Week") %>%
+    filter(Date != "Playoffs") %>%
+    
+# Fixing NA Values
+    mutate(Overtime = ifelse(is.na(Overtime), "No", "Yes")) %>%
+    mutate(Home_Away = case_when(
+      is.na(Home_Away) ~ "Home",
+      Home_Away == "N" ~ "Neutral",
+      Home_Away == "@" ~ "Away"
+    )) %>%
+    mutate(Turnovers_Lost = ifelse(is.na(Turnovers_Lost), 0, Turnovers_Lost)) %>%
+    mutate(Turnovers_Gained = ifelse(is.na(Turnovers_Gained), 0, Turnovers_Gained)) %>%
+  
+# Adding Team Name
+    mutate(Team = case_when(
+      team_name == "49ers" ~ "San Francisco 49ers",
+      team_name == "bears" ~ "Chicago Bears",
+      team_name == "bengals" ~ "Cincinnati Bengals",
+      team_name == "bills" ~ "Buffalo Bills",
+      team_name == "broncos" ~ "Denver Broncos",
+      team_name == "browns" ~ "Cleveland Browns",
+      team_name == "buccaneers" ~ "Tampa Bay Buccaneers",
+      team_name == "cardinals" ~ "Arizona Cardinals",
+      team_name == "chargers" ~ "Los Angeles Chargers",
+      team_name == "chiefs" ~ "Kansas City Cheifs",
+      team_name == "colts" ~ "Indianapolis Colts",
+      team_name == "commanders" ~ "Washington Commanders",
+      team_name == "cowboys" ~ "Dallas Cowboys",
+      team_name == "dolphins" ~ "Miami Dolphins",
+      team_name == "eagles" ~ "Philadelphia Eagles",
+      team_name == "falcons" ~ "Atlanta Falcons",
+      team_name == "giants" ~ "New York Giants",
+      team_name == "jaguars" ~ "Jacksonville Jaguars",
+      team_name == "jets" ~ "New York Jets",
+      team_name == "lions" ~ "Detroit Lions",
+      team_name == "packers" ~ "Green Bay Packers",
+      team_name == "panthers" ~ "Carolina Panthers",
+      team_name == "patriots" ~ "New England Patriots",
+      team_name == "raiders" ~ "Las Vegas Raiders",
+      team_name == "rams" ~ "Los Angeles Rams",
+      team_name == "ravens" ~ "Baltimore Ravens",
+      team_name == "saints" ~ "New Orleans Saints",
+      team_name == "seahawks" ~ "Seattle Seahawks",
+      team_name == "steelers" ~ "Pittsburgh Steelers",
+      team_name == "texans" ~ "Houston Texans",
+      team_name == "titans" ~ "Tennessee Titans",
+      team_name == "vikings" ~ "Minnesota Vikings"
+    ))
+  
+# Reorder the Columns
+  team_clean <- team_clean %>%
+    select(Week, Day, Date, Time, Team, Opponent, Win_Loss, Overtime, Record, Home_Away,
+           Points_Scored, Points_Allowed, Off_First_Downs, Off_Total_Yards, Off_Passing_Yards,
+           Off_Rushing_Yards, Turnovers_Lost, Def_First_Downs, Def_Total_Yards,
+           Def_Passing_Yards, Def_Rushing_Yards, Turnovers_Gained)
+  
+  return(team_clean)
+}
+```
+
+# Apply Function to all Teams
+
+```{r}
+raw_data <- list.files(
+  "~/Field Vision Analytics/Raw Data/",
+  pattern = "_raw.txt",
+  full.names = TRUE
+)
+
+nfl_clean <- data.frame()
+
+for (file in raw_data) {
+  team_clean <- clean_team_data(file)
+  nfl_clean <- rbind(nfl_clean, team_clean)
+}
+```
+
+# Exporting Clean CSV file
+
+```{r}
+summary(nfl_clean)
+
+write_csv(nfl_clean, "nfl_cleaned.csv")
+```
