@@ -91,7 +91,10 @@ clean_team_data <- function(file_path){
       team_name == "texans" ~ "Houston Texans",
       team_name == "titans" ~ "Tennessee Titans",
       team_name == "vikings" ~ "Minnesota Vikings"
-    ))
+    )) %>%
+
+# Removing Ties
+  filter(Win_Loss != "T")
   
 # Reorder the Columns
   team_clean <- team_clean %>%
