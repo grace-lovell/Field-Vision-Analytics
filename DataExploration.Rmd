@@ -1,0 +1,85 @@
+---
+title: "Data Exploration"
+author: "Gracie Lovell"
+date: "2026-02-12"
+output: pdf_document
+---
+
+```{r}
+library(dplyr)
+library(corrplot)
+library(GGally)
+library(ggplot2)
+library(purrr)
+library(readr)
+nfl_cleaned <- read_csv("nfl_cleaned.csv")
+head(nfl_cleaned)
+```
+```{r}
+str(nfl_cleaned)
+```
+
+```{r}
+names(nfl_cleaned)
+```
+
+```{r}
+summary(nfl_cleaned)
+```
+
+```{r}
+colSums(is.na(nfl_cleaned))
+```
+
+```{r}
+nfl_numeric <- nfl_cleaned %>%
+  select(where(is.numeric))
+head(nfl_numeric)
+```
+
+```{r}
+cor(nfl_numeric)
+```
+
+```{r}
+cols <- as.numeric(as.factor(nfl_cleaned$Win_Loss))
+
+pairs(nfl_numeric, col = cols)
+```
+
+```{r}
+correlations <- cor(nfl_numeric)
+corrplot(correlations)
+```
+
+```{r}
+ggpairs(nfl_numeric, progress = FALSE)
+```
+
+```{r}
+x_cols75 <- c("Off_Total_Yards", "Off_Passing_Yards", "Def_Total_Yards", "Def_Passing_Yards")
+y_cols75 <- c("Off_First_Downs", "Off_Total_Yards", "Def_First_Downs", "Def_Total_Yards")
+
+plots75 <- map2(x_cols75, y_cols75, ~
+  ggplot(nfl_cleaned, aes(x = .data[[.x]], y = .data[[.y]], colour = Win_Loss)) +
+    geom_point(alpha = 0.6) +
+    labs(x = .x, y = .y,
+         title = paste(.x, "vs", .y)) +
+    theme_minimal()
+)
+plots75
+```
+
+```{r}
+x_cols50 <- c("Off_First_Downs", "Off_Total_Yards", "Off_Passing_Yards", "Off_Rushing_Yards", "Def_First_Downs", "Def_Total_Yards", "Def_Passing_Yards", "Def_Rushing_Yards")
+y_cols50 <- c("Points_Scored", "Points_Scored", "Off_First_Downs", "Off_Total_Yards", "Points_Allowed", "Points_Allowed", "Def_First_Downs", "Def_Total_Yards")
+
+plots50 <- map2(x_cols50, y_cols50, ~
+  ggplot(nfl_cleaned, aes(x = .data[[.x]], y = .data[[.y]], colour = Win_Loss)) +
+    geom_point(alpha = 0.6) +
+    labs(x = .x, y = .y,
+         title = paste(.x, "vs", .y)) +
+    theme_minimal()
+)
+plots50
+```
