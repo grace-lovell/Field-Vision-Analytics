@@ -57,8 +57,17 @@ ggpairs(nfl_numeric, progress = FALSE)
 ```
 
 ```{r}
-x_cols75 <- c("Off_Total_Yards", "Off_Passing_Yards", "Def_Total_Yards", "Def_Passing_Yards")
-y_cols75 <- c("Off_First_Downs", "Off_Total_Yards", "Def_First_Downs", "Def_Total_Yards")
+cor_df <- as.data.frame(as.table(correlations), stringsAsFactors = FALSE) %>%
+  rename(x_var = Var1) %>%
+  rename(y_var = Var2) %>%
+  rename(cor = Freq)
+
+high_cor_75 <- cor_df %>%
+  filter(x_var < y_var) %>%
+  filter(abs(cor) >= 0.75)
+
+x_cols75 <- high_cor_75$x_var
+y_cols75 <- high_cor_75$y_var
 
 plots75 <- map2(x_cols75, y_cols75, ~
   ggplot(nfl_cleaned, aes(x = .data[[.x]], y = .data[[.y]], colour = Win_Loss)) +
@@ -71,8 +80,12 @@ plots75
 ```
 
 ```{r}
-x_cols50 <- c("Off_First_Downs", "Off_Total_Yards", "Off_Passing_Yards", "Off_Rushing_Yards", "Def_First_Downs", "Def_Total_Yards", "Def_Passing_Yards", "Def_Rushing_Yards")
-y_cols50 <- c("Points_Scored", "Points_Scored", "Off_First_Downs", "Off_Total_Yards", "Points_Allowed", "Points_Allowed", "Def_First_Downs", "Def_Total_Yards")
+high_cor_50 <- cor_df %>%
+  filter(x_var < y_var) %>%
+  filter(abs(cor) >= 0.50 & abs(cor) < 0.75)
+
+x_cols50 <- high_cor_50$x_var
+y_cols50 <- high_cor_50$y_var
 
 plots50 <- map2(x_cols50, y_cols50, ~
   ggplot(nfl_cleaned, aes(x = .data[[.x]], y = .data[[.y]], colour = Win_Loss)) +
