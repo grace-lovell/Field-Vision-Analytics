@@ -10,6 +10,10 @@ library(readr)
 library(dplyr)
 library(caret)
 library(car)
+library(rpart)
+library(rpart.plot)
+library(randomForest)
+library(ModelMetrics)
 nfl_cleaned <- read_csv("nfl_cleaned.csv")
 head(nfl_cleaned)
 ```
@@ -23,6 +27,8 @@ def_vars <- nfl_cleaned %>%
   select(Points_Allowed, Def_First_Downs, Def_Total_Yards, Def_Passing_Yards, Def_Rushing_Yards, Turnovers_Gained)
 head(def_vars)
 ```
+
+# Logistic Regression
 
 ```{r}
 nfl_cleaned$Win_Loss <- as.factor(nfl_cleaned$Win_Loss)
@@ -102,5 +108,74 @@ mean(pred_class == (differences$Win_Loss == "W"))
 
 ```{r}
 vif(diff_log)
+```
+
+# Random Forest
+
+```{r}
+nfl_clean <- nfl_cleaned %>%
+  select(Win_Loss, Overtime, Home_Away, Off_First_Downs, Off_Total_Yards, Off_Passing_Yards,
+         Off_Rushing_Yards, Turnovers_Lost, Def_First_Downs, Def_Total_Yards, Def_Passing_Yards, Def_Rushing_Yards, 
+         Turnovers_Gained) %>%
+  mutate(Win_Loss = as.factor(Win_Loss))
+
+set.seed(20190407)
+nfl_train <- nfl_clean %>% sample_frac(.65)
+nfl_test <- anti_join(nfl_clean, nfl_train)
+```
+
+```{r}
+nfl_tree <- rpart(Win_Loss ~ ., data = nfl_train)
+rpart.plot(nfl_tree, tweak = 1, faclen = 4, box.palette = "Reds")
+nfl_tree
+```
+
+```{r}
+nfl_rf <- randomForest(Win_Loss ~ ., data = nfl_train)
+nfl_rf
+
+importance(nfl_rf)
+varImpPlot(nfl_rf)
+```
+
+```{r}
+nfl_rf2 <- randomForest(Win_Loss ~ . - Overtime - Home_Away, data = nfl_train)
+nfl_rf2
+
+importance(nfl_rf2)
+varImpPlot(nfl_rf2)
+```
+
+```{r}
+nfl_diff <- nfl_clean %>%
+  select(Win_Loss) %>%
+  mutate(Turnover_Diff = nfl_clean$Turnovers_Gained - nfl_clean$Turnovers_Lost) %>%
+  mutate(Total_Diff = nfl_clean$Off_Total_Yards - nfl_clean$Def_Total_Yards) %>%
+  mutate(Rushing_Diff = nfl_clean$Off_Rushing_Yards - nfl_clean$Def_Rushing_Yards) %>%
+  mutate(Passing_Diff = nfl_clean$Off_Passing_Yards - nfl_clean$Def_Passing_Yards) %>%
+  mutate(Down_Diff = nfl_clean$Off_First_Downs - nfl_clean$Def_First_Downs)
+
+set.seed(20190407)
+diff_train <- nfl_diff %>% sample_frac(.65)
+diff_test  <- anti_join(nfl_diff, diff_train)
+
+diff_rf <- randomForest(Win_Loss ~ ., data = diff_train)
+diff_rf
+
+importance(diff_rf)
+varImpPlot(diff_rf)
+```
+
+```{r}
+tree_acc <- mean(predict(nfl_tree, nfl_test, type = "class") == nfl_test$Win_Loss)
+rf_acc <- mean(predict(nfl_rf, nfl_test) == nfl_test$Win_Loss)
+rf2_acc <- mean(predict(nfl_rf2, nfl_test) == nfl_test$Win_Loss)
+diff_acc <- mean(predict(diff_rf, diff_test) == diff_test$Win_Loss)
+
+model_comparison <- data.frame(
+  Model = c("Decision Tree", "Random Forest (Full)", "Random Forest (Reduced)", "Random Forest (Differences)"),
+  Test_Accuracy = c(tree_acc, rf_acc, rf2_acc, diff_acc)
+)
+model_comparison
 ```
 
