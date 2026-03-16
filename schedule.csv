@@ -1,0 +1,18 @@
+Game Number,Week,Date,Day,Location,Opponent,Result,Points For,Points Against,Overtime
+1,1,2025-09-07,Sun,Home,TEN,Win,20,12,No
+2,2,2025-09-14,Sun,Away,IND,Loss,28,29,No
+3,3,2025-09-21,Sun,Away,LAC,Loss,20,23,No
+4,4,2025-09-29,Mon,Home,CIN,Win,28,3,No
+5,5,2025-10-05,Sun,Away,PHI,Win,21,17,No
+6,6,2025-10-12,Sun,Away,NYJ,Win,13,11,No
+7,7,2025-10-19,Sun,Home,NYG,Win,33,32,No
+8,8,2025-10-26,Sun,Home,DAL,Win,44,24,No
+9,9,2025-11-02,Sun,Away,HOU,Win,18,15,No
+10,10,2025-11-06,Thu,Home,LVR,Win,10,7,No
+11,11,2025-11-16,Sun,Home,KAN,Win,22,19,No
+12,13,2025-11-30,Sun,Away,WAS,Win,27,26,Yes
+13,14,2025-12-07,Sun,Away,LVR,Win,24,17,No
+14,15,2025-12-14,Sun,Home,GNB,Win,34,26,No
+15,16,2025-12-21,Sun,Home,JAX,Loss,20,34,No
+16,17,2025-12-25,Thu,Away,KAN,Win,20,13,No
+17,18,2026-01-04,Sun,Home,LAC,Win,19,3,No
