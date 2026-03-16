@@ -1,0 +1,7 @@
+Rk,Player,Age,Pos,G,GS,Ret,Yds,PRTD,Lng,Y/Ret,Ret,Yds,KRTD,Lng,Y/Ret,APYd,Awards,-9999
+1,RJ Harvey,24,RB,17,7,0,0,0,0,,16,353,0,29,22.1,1249,,HarvRJ00
+2,Tyler Badie,25,RB,16,0,0,0,0,0,,17,452,0,34,26.6,616,,BadiTy00
+3,Marvin Mims,23,WR,15,4,29,452,1,70,15.6,25,658,0,46,26.3,1510,,MimsMa00
+4,Jaleel McLaughlin,25,RB,8,1,0,0,0,0,,1,28,0,28,28.0,242,,McLaJa00
+5,Michael Bandy,28,WR,4,0,5,29,0,12,5.8,0,0,0,0,,79,,BandMi00
+,Team Totals,,,17,,34,481,1,70,14.1,59,1491,0,46,25.3,3696,,-9999

@@ -1,0 +1,67 @@
+No.,Player,Age,Pos,G,GS,Wt,Ht,College/Univ,BirthDate,Yrs,AV,Drafted (tm/rnd/yr),Player-additional
+31,Kris Abrams-Draine,24,CB,17,2,178,5-11,Missouri,10/4/2001,1,1,Denver Broncos / 5th / 145th pick / 2024,AbraKr00
+45,Nate Adkins,26,TE,9,6,252,6-3,East Tennessee St.South Carolina,7/9/1999,2,0,,AdkiNa00
+99,Zach Allen,28,DL,17,17,285,6-5,Boston Col.,8/20/1997,6,19,Arizona Cardinals / 3rd / 65th pick / 2019,AlleZa01
+28,Tyler Badie,25,RB,16,0,197,5-8,Missouri,2/7/2000,3,1,Baltimore Ravens / 6th / 196th pick / 2022,BadiTy00
+56,Levelle Bailey,25,LB,3,0,225,6-2,Fresno St.,12/4/2000,1,0,,BailLe00
+,Michael Bandy,28,WR,4,0,190,5-10,San Diego,12/5/1997,4,0,,BandMi00
+23,Jahdae Barron,24,CB,17,5,200,5-11,Texas,12/4/2001,Rook,3,Denver Broncos / 1st / 20th pick / 2025,BarrJa01
+72,Garett Bolles,33,T,17,17,300,6-5,Snow College (UT)Utah,5/27/1992,8,13,Denver Broncos / 1st / 20th pick / 2017,BollGa00
+15,Nik Bonitto,26,OLB,17,16,240,6-3,Oklahoma,9/26/1999,3,12,Denver Broncos / 2nd / 64th pick / 2022,BoniNi00
+13,Pat Bryant,23,WR,15,7,204,6-2,Illinois,12/10/2002,Rook,3,Denver Broncos / 3rd / 74th pick / 2025,BryaPa00
+0,Jonathon Cooper,27,OLB,17,17,257,6-4,Ohio St.,1/8/1998,4,9,Denver Broncos / 7th / 239th pick / 2021,CoopJo02
+16,Jeremy Crawshaw,24,P,17,0,205,6-3,Florida,5/22/2001,Rook,3,Denver Broncos / 6th / 216th pick / 2025,CrawJe00
+73,Frank Crum,25,OT,11,2,315,6-7,Wyoming,5/14/2000,1,1,,CrumFr00
+27,J.K. Dobbins,27,RB,10,9,212,5-10,Ohio St.,12/17/1998,5,5,Baltimore Ravens / 2nd / 55th pick / 2020,DobbJK00
+52,Jonah Elliss,22,OLB,13,0,246,6-2,Utah,4/3/2003,1,1,Denver Broncos / 3rd / 76th pick / 2024,ElliJo03
+1,Evan Engram,31,TE,16,2,240,6-3,Mississippi,9/2/1994,8,4,New York Giants / 1st / 23rd pick / 2017,EngrEv00
+54,Alex Forsyth,26,C,17,2,312,6-4,Oregon,2/13/1999,1,2,Denver Broncos / 7th / 257th pick / 2023,ForsAl00
+48,Mitchell Fraboni,29,LS,17,0,223,6-2,Arizona St.,10/28/1996,3,1,,FrabMi00
+11,Troy Franklin,22,WR,17,7,180,6-3,Oregon,2/6/2003,1,6,Denver Broncos / 4th / 102nd pick / 2024,FranTr00
+98,John Franklin-Myers,29,DL,16,15,288,6-4,S.F. Austin,9/26/1996,7,8,Los Angeles Rams / 4th / 135th pick / 2018,FranJo02
+25,J.T. Gray,29,S,1,0,202,6-0,Mississippi St.,1/18/1996,7,0,,GrayJ.00
+57,Dre Greenlaw,28,LB,8,7,230,6-0,Arkansas,5/25/1997,6,4,San Francisco 49ers / 5th / 148th pick / 2019,GreeDr00
+12,RJ Harvey,24,RB,17,7,205,5-8,VirginiaCentral Florida,2/4/2001,Rook,6,Denver Broncos / 2nd / 60th pick / 2025,HarvRJ00
+9,Talanoa Hufanga,26,S,17,17,200,6-0,USC,2/2/1999,4,10,San Francisco 49ers / 5th / 180th pick / 2021,HufaTa00
+,Lil'Jordan Humphrey,27,WR,7,2,225,6-4,Texas,4/19/1998,6,1,,HumpLi01
+94,Jordan Jackson,27,DL,5,0,294,6-4,Air Force,1/30/1998,1,0,New Orleans Saints / 6th / 194th pick / 2022,JackJo06
+22,Brandon Jones,27,S,14,13,191,6-0,Texas,4/2/1998,5,5,Miami Dolphins / 3rd / 70th pick / 2020,JoneBr06
+93,D.J. Jones,30,DT,16,14,305,6-0,East Mississippi CCMississippi,1/19/1995,8,7,San Francisco 49ers / 6th / 198th pick / 2017,JoneD.01
+95,Sai'vion Jones,22,DE,3,0,289,6-5,LSU,7/3/2003,Rook,1,Denver Broncos / 3rd / 101st pick / 2025,JoneSa01
+26,Devon Key,28,DB,17,0,208,6-0,Western Kentucky,10/28/1997,1,7,,KeyxDe00
+85,Lucas Krull,27,TE,3,3,260,6-6,JeffersonFloridaPittsburgh,7/11/1998,3,0,,KrulLu00
+89,Marcedes Lewis,41,TE,5,1,265,6-6,UCLA,5/19/1984,19,0,Jacksonville Jaguars / 1st / 28th pick / 2006,LewiMa00
+6,P.J. Locke,28,S,16,3,202,5-10,Texas,2/12/1997,5,2,,LockPJ00
+3,Wil Lutz,31,K,17,0,184,5-11,Georgia St.,7/7/1994,9,3,,LutzWi00
+69,Mike McGlinchey,31,T,17,17,315,6-8,Notre Dame,8/29/1994,7,7,San Francisco 49ers / 1st / 9th pick / 2018,McGlMi00
+38,Jaleel McLaughlin,25,RB,8,1,187,5-7,Notre Dame (OH)Youngstown St.,9/13/2000,2,1,,McLaJa00
+29,Ja'Quan McMillian,25,CB,17,3,183,5-10,East Carolina,6/4/2000,3,3,,McMiJa00
+77,Quinn Meinerz,27,OL,17,17,320,6-3,Wisconsin–Whitewater,11/15/1998,4,11,Denver Broncos / 3rd / 98th pick / 2021,MeinQu02
+19,Marvin Mims,23,WR,15,4,182,5-11,Oklahoma,3/19/2002,2,4,Denver Broncos / 2nd / 63rd pick / 2023,MimsMa00
+21,Riley Moss,25,CB,17,17,193,6-0,Iowa,3/3/2000,2,6,Denver Broncos / 3rd / 83rd pick / 2023,MossRi00
+,Sam Mustipher,29,C,1,0,306,6-3,Notre Dame,8/13/1996,5,0,,MustSa01
+10,Bo Nix,25,QB,17,17,217,6-2,AuburnOregon,2/25/2000,1,13,Denver Broncos / 1st / 12th pick / 2024,NixxBo00
+63,Alex Palczewski,26,T,17,10,314,6-6,Illinois,8/3/1999,1,5,,PalcAl00
+79,Matt Peart,28,T,6,1,318,6-7,Connecticut,6/11/1997,5,1,New York Giants / 3rd / 99th pick / 2020,PearMa00
+74,Ben Powers,29,G,8,6,310,6-4,Oklahoma,10/29/1996,6,2,Baltimore Ravens / 4th / 123rd pick / 2019,PoweBe00
+46,Adam Prentice,28,FB,17,3,245,6-0,South Carolina,1/16/1997,4,1,,PrenAd00
+47,Karene Reid,25,LB,10,0,226,6-0,Utah,2/19/2000,Rook,1,,ReidKa00
+97,Malcolm Roach,27,DT,12,2,290,6-3,Texas,6/9/1998,5,2,,RoacMa01
+51,Quandarrius Robinson,24,OLB,6,0,243,6-4,Alabama,5/12/2001,Rook,1,Denver Broncos / 4th / 134th pick / 2025,RobiQu00
+5,Trent Sherfield,29,WR,10,3,205,6-1,Vanderbilt,2/25/1996,7,0,,SherTr00
+49,Alex Singleton,32,LB,16,16,240,6-2,Montana St.,12/7/1993,6,8,,SingAl00
+34,JL Skinner,24,S,17,0,220,6-4,Boise St.,4/16/2001,2,1,Denver Broncos / 6th / 183rd pick / 2023,SkinJL00
+8,Jarrett Stidham,29,QB,1,0,215,6-3,BaylorAuburn,8/8/1996,6,0,New England Patriots / 4th / 133rd pick / 2019,StidJa00
+40,Justin Strnad,29,LB,16,8,235,6-3,Wake Forest,8/21/1996,4,5,Denver Broncos / 5th / 178th pick / 2020,StrnJu00
+2,Patrick Surtain II,25,CB,14,14,202,6-2,Alabama,4/14/2000,4,11,Denver Broncos / 1st / 9th pick / 2021,SurtPa01
+14,Courtland Sutton,30,WR,17,16,216,6-4,SMU,10/10/1995,7,8,Denver Broncos / 2nd / 40th pick / 2018,SuttCo00
+35,Reese Taylor,26,CB,4,0,188,5-9,IndianaPurdue,8/27/1999,1,0,,TaylRe01
+76,Calvin Throckmorton,29,OG,10,0,311,6-5,Oregon,8/16/1996,4,1,,ThroCa01
+92,Dondrea Tillman,27,OLB,17,0,247,6-4,Indiana (PA),4/30/1998,1,2,,TillDo00
+82,Adam Trautman,28,TE,17,12,253,6-5,Dayton,2/5/1997,5,2,New Orleans Saints / 3rd / 105th pick / 2020,TrauAd00
+55,Jordan Turner,24,LB,7,0,231,6-1,WisconsinMichigan St.,12/13/2001,Rook,1,,TurnJo00
+32,Delarrin Turner-Yell,26,S,1,0,200,5-11,Oklahoma,12/16/1999,3,0,Denver Broncos / 5th / 152nd pick / 2022,TurnDe02
+96,Eyioma Uwazurike,27,DL,17,1,320,6-6,Iowa St.,5/6/1998,3,2,Denver Broncos / 4th / 116th pick / 2022,UwazEy00
+50,Garret Wallow,26,LB,7,0,230,6-2,TCU,1/25/1999,4,1,Houston Texans / 5th / 170th pick / 2021,WallGa00
+60,Luke Wattenberg,28,C,15,15,300,6-5,Washington,9/10/1997,3,5,Denver Broncos / 5th / 171st pick / 2022,WattLu00
+,Team Total,27,,17,,241.1,6-2.1,,,3.7,,,-9999
