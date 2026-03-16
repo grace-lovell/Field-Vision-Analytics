@@ -1,0 +1,206 @@
+---
+title: "Untitled"
+author: "Gracie Lovell"
+date: "2026-03-05"
+output: pdf_document
+---
+
+```{r}
+library(tidyverse)
+```
+
+# OFFENSE
+
+```{r}
+passing <- read_csv("Passing.txt")
+rushing_receiving <- read_csv("Rushing_Receiving.txt")
+```
+
+```{r}
+passing_clean <- passing %>%
+  filter(Player != "Team Totals") %>%
+  select(Player, Age, Pos, G, GS, Cmp, Att, `Cmp%`, Yds...11, TD, `TD%`, Int, `Int%`, `1D`, `Succ%`, Sk) %>%
+  rename("Games Played" = "G",
+         "Games Started" = "GS",
+         "Completions" = "Cmp",
+         "Attempts" = "Att",
+         "CompPerc" = "Cmp%",
+         "Yards" = "Yds...11",
+         "Touchdowns" = "TD",
+         "TouchdownPerc" = "TD%",
+         "Interceptions" = "Int",
+         "IntPerc" = "Int%",
+         "FirstDowns" = "1D",
+         "SuccessRate" = "Succ%",
+         "Sacks" = "Sk")
+passing_clean[is.na(passing_clean)] <- 0
+```
+
+```{r}
+write_csv(passing_clean, "passing.csv")
+```
+
+```{r}
+rushing_receiving_clean <- rushing_receiving %>%
+  filter(Player != "Team Totals") %>%
+  select(Player, Age, Pos, G, GS, Att, Yds...8, TD...9, `1D...10`, `Succ%...11`, Tgt, Rec, Yds...18, TD...20, `1D...21`, `Succ%...22`, Fmb) %>%
+  rename("Games Played" = "G",
+         "Games Started" = "GS",
+         "Rush Attempts" = "Att",
+         "Rushing Yards" = "Yds...8",
+         "Rushing Touchdowns" = "TD...9",
+         "Rushing FirstDowns" = "1D...10",
+         "Rushing SuccessRate" = "Succ%...11",
+         "Targets" = "Tgt",
+         "Receptions" = "Rec",
+         "Reception Yards" = "Yds...18",
+         "Receiving Touchdowns" = "TD...20",
+         "Receiving FirstDowns" = "1D...21",
+         "Receiving SuccessRate" = "Succ%...22",
+         "Fumbles" = "Fmb")
+rushing_receiving_clean[is.na(rushing_receiving_clean)] <- 0
+```
+
+```{r}
+write_csv(rushing_receiving_clean, "rush_receive.csv")
+```
+
+# DEFENSE
+
+```{r}
+defense <- read_csv("defense.txt")
+```
+
+```{r}
+defense_clean <- defense %>%
+  filter(Player != "Team Totals") %>%
+  select(Player, Age, Pos, G, GS, Int, Yds...8, IntTD, PD, FF, Fmb, FR, Yds...15, FRTD, Sk, Comb, Solo, Ast, TFL, QBHits, Sfty) %>%
+  rename("Games Played" = "G",
+         "Games Started" = "GS",
+         "Interceptions" = "Int",
+         "IntYards" = "Yds...8",
+         "Interception Touchdowns" = "IntTD",
+         "Passes Defended" = "PD",
+         "Forced Fumbles" = "FF",
+         "Fumbles" = "Fmb",
+         "Fumbles Recovered" = "FR",
+         "Fumble Yards" = "Yds...15",
+         "Fumbles Resulted TD" = "FRTD",
+         "Sacks" = "Sk",
+         "Combined Tackles" = "Comb",
+         "Solo Tackles" = "Solo",
+         "Assisted Tackles" = "Ast",
+         "Tackles For Loss" = "TFL",
+         "QB Hits" = "QBHits",
+         "Safeties" = "Sfty")
+defense_clean[is.na(defense_clean)] <- 0
+```
+
+```{r}
+write_csv(defense_clean, "defense.csv")
+```
+
+# SPECIAL TEAMS
+
+```{r}
+returns <- read_csv("returns.txt")
+kicking <- read_csv("kicking.txt")
+punting <- read_csv("punting.txt")
+```
+
+```{r}
+special_teams <- returns %>%
+  full_join(kicking, by = c("Player", "Age", "Pos", "G", "GS"))
+
+special_teams <- special_teams %>%
+  full_join(punting, by = c("Player", "Age", "Pos", "G", "GS"))
+
+special_teams_cleaned <- special_teams %>%
+  filter(Player != "Team Totals") %>%
+  select(Player, Age, Pos, G, GS, Ret...7, Yds...8, PRTD, Ret...12, Yds...13, KRTD, FGA...17, FGM...18, `FG%`, XPA, XPM, `XP%`, KO, KOYds, TB.x, `TB%.x`, Pnt, Yds) %>%
+  rename("Games Played" = "G",
+         "Games Started" = "GS",
+         "Punt Returns" = "Ret...7",
+         "Punt Return Yardage" = "Yds...8",
+         "Punt Return for TD" = "PRTD",
+         "Kickoff Returns" = "Ret...12",
+         "Kickoff Return Yardage" = "Yds...13",
+         "Kickoff Return for TD" = "KRTD",
+         "Field Goals Att" = "FGA...17",
+         "Field Goals Made" = "FGM...18",
+         "Field Goal Perc" = "FG%", 
+         "Extra Points Att" = "XPA",
+         "Extra Points Made" = "XPM",
+         "Extra Point Perc" = "XP%",
+         "Kickoffs" = "KO",
+         "Kickoff Yards" = "KOYds",
+         "Touchbacks" = "TB.x",
+         "Touchback Perc" = "TB%.x",
+         "Punts" = "Pnt",
+         "Punt Yardage" = "Yds")
+special_teams_cleaned[is.na(special_teams_cleaned)] <- 0
+```
+
+```{r}
+write_csv(special_teams_cleaned, "special_teams.csv")
+```
+
+# ROSTER
+
+```{r}
+roster <- read_csv("roster.txt")
+```
+
+```{r}
+roster_clean <- roster %>%
+  filter(Player != "Team Total") %>%
+  select(No., Player, Age, Pos, G, GS, Wt, Ht, Yrs) %>%
+  rename("Number" = "No.",
+         "Games Played" = "G",
+         "Games Started" = "GS",
+         "Weight" = "Wt",
+         "Heigth" = "Ht",
+         "Years" = "Yrs") %>%
+  mutate(Number = ifelse(is.na(Number), "NoNum", Number))
+```
+
+```{r}
+write_csv(roster_clean, "roster.csv")
+```
+
+# GAME SCHEDULE
+
+```{r}
+schedule <- read_csv("schedule.txt")
+```
+
+```{r}
+schedule_clean <- schedule %>%
+  filter(!is.na(Week)) %>%
+  select(Gtm, Week, Date, Day, ...6, Opp, Rslt, Pts, PtsO, OT) %>%
+  rename("Game Number" = "Gtm",
+         "Location" = "...6",
+         "Opponent" = "Opp",
+         "Result" = "Rslt",
+         "Points For" = "Pts",
+         "Points Against" = "PtsO",
+         "Overtime" = "OT") %>%
+  mutate(Location = case_when(
+    is.na(Location) ~ "Home",
+    Location == "@" ~ "Away"
+  )) %>%
+  mutate(Result = case_when(
+    Result == "W" ~ "Win",
+    Result == "L" ~ "Loss",
+    Result == "T" ~ "Tie"
+  )) %>%
+  mutate(Overtime = case_when(
+    is.na(Overtime) ~ "No",
+    Overtime == "OT" ~ "Yes"
+  ))
+```
+
+```{r}
+write_csv(schedule_clean, "schedule.csv")
+```
+
