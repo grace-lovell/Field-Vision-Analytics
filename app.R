@@ -1,6 +1,6 @@
 library(tidyverse)
 library(shiny)
-library(shinyjs)
+library(DT)
 
 ui <- fluidPage(
   # -------------------------
@@ -301,7 +301,7 @@ server <- function(input, output, session) {
   # -------------------------
   # PASSING TABLE
   # -------------------------
-  output$passing_table <- renderTable({
+  output$passing_table <- renderDT({
     req(input$passing_file)
     df <- read.csv(input$passing_file$datapath)
     
@@ -317,12 +317,12 @@ server <- function(input, output, session) {
     }
     
     df
-  })
+  }, options = list(paging = FALSE, scrollX = TRUE, scrollY = "800px"))
   
   # -------------------------
   # RUSHING & RECEIVING TABLE
   # -------------------------
-  output$rush_receive_table <- renderTable({
+  output$rush_receive_table <- renderDT({
     req(input$rushing_receiving_file)
     df <- read.csv(input$rushing_receiving_file$datapath)
     
@@ -356,12 +356,12 @@ server <- function(input, output, session) {
     df <- df[, selected_cols, drop = FALSE]
     
     df
-  })
+  }, options = list(paging = FALSE, scrollX = TRUE, scrollY = "800px"))
   
   # -------------------------
   # DEFENSE TABLE
   # -------------------------
-  output$defense_table <- renderTable({
+  output$defense_table <- renderDT({
     req(input$defense_file)
     df <- read.csv(input$defense_file$datapath)
     
@@ -411,12 +411,12 @@ server <- function(input, output, session) {
     df <- df[, selected_cols, drop = FALSE]
     
     df
-  })
+  }, options = list(paging = FALSE, scrollX = TRUE, scrollY = "800px"))
 
   # -------------------------
   # SPECIAL TEAMS TABLE
   # -------------------------  
-  output$special_table <- renderTable({
+  output$special_table <- renderDT({
     req(input$special_file)
     df <- read.csv(input$special_file$datapath)
     
@@ -458,13 +458,13 @@ server <- function(input, output, session) {
     df <- df[, selected_cols, drop = FALSE]
     
     df
-  })
+  }, options = list(paging = FALSE, scrollX = TRUE, scrollY = "800px"))
   
   
   # -------------------------
   # ROSTER TABLE
   # -------------------------
-  output$roster_table <- renderTable({
+  output$roster_table <- renderDT({
     req(input$roster_file)
     df <- read.csv(input$roster_file$datapath)
     
@@ -485,12 +485,12 @@ server <- function(input, output, session) {
     }
     
     df
-  })
+  }, options = list(paging = FALSE, scrollX = TRUE, scrollY = "800px"))
   
   # -------------------------
   # SCHEDULE TABLE
   # -------------------------
-  output$schedule_table <- renderTable({
+  output$schedule_table <- renderDT({
     req(input$schedule_file)
     df <- read.csv(input$schedule_file$datapath)
     
@@ -525,7 +525,7 @@ server <- function(input, output, session) {
     }
     
     df
-  })
+  }, options = list(paging = FALSE, scrollX = TRUE, scrollY = "800px"))
   
   output$pageContent <- renderUI({
     
@@ -827,7 +827,7 @@ server <- function(input, output, session) {
                   tags$div(class = "panel-title", tags$span(class = "dot"), "Passing"),
                   tags$div(class = "panel-badge", paste(format(Sys.Date(), "%Y")), "Season")
                 ),
-                tags$div(class = "data-table-wrap", tableOutput("passing_table"))
+                tags$div(class = "data-table-wrap", DTOutput("passing_table"))
               ),
               tags$div(class = "section-label", "Rushing & Receiving Data"),
               tags$div(class = "panel-card",
@@ -868,7 +868,7 @@ server <- function(input, output, session) {
                   tags$div(class = "panel-title", tags$span(class = "dot"), "Rushing & Receiving"),
                   tags$div(class = "panel-badge", paste(format(Sys.Date(), "%Y")), "Season")
                 ),
-                tags$div(class = "data-table-wrap", tableOutput("rush_receive_table"))
+                tags$div(class = "data-table-wrap", DTOutput("rush_receive_table"))
               ),
             ),
             # -------------------------
@@ -900,9 +900,14 @@ server <- function(input, output, session) {
               ),
               tags$div(class = "panel-card",
                 tags$div(class = "panel-header",
-                  tags$div(class = "panel-title", tags$span(class = "dot"), "Filters"),
+                  tags$div(class = "panel-title", tags$span(class = "dot"), "Filters")
+                ),
+                tags$div(class = "filter-grid",
+                  tags$div(
                     tags$div(class = "section-label", "Search:"),
-                    textInput("search_defense", NULL, placeholder = "Name..."),
+                    textInput("search_defense", NULL, placeholder = "Name...")
+                  ),
+                  tags$div(
                     tags$div(class = "section-label", "Position:"),
                     selectizeInput("filter_pos_defense", NULL, choices = c("QB", "RB", "HB", "TB", "FB", 
                                                                           "LH", "RH", "BB", "B", "WB", 
@@ -918,11 +923,16 @@ server <- function(input, output, session) {
                                                                           "LB", "LCB", "CB", "RCB", "SS", 
                                                                           "FS", "LDH", "RDH", "LS", "S",
                                                                           "RS", "DB", "K", "P", "PR", "KR", "RET"),
-                                                                          NULL, multiple = TRUE),
+                                                                          NULL, multiple = TRUE)
+                  ),
+                  tags$div(
                     tags$div(class = "section-label", "Position Group:"),
-                    selectizeInput("filter_pos_group_defense", NULL, choices = c("D-Line", "Linebackers", "Defensive Backs", "Other"), NULL, multiple = TRUE),
+                    selectizeInput("filter_pos_group_defense", NULL, choices = c("D-Line", "Linebackers", "Defensive Backs", "Other"), NULL, multiple = TRUE)
+                  ),
+                  tags$div(
                     tags$div(class = "section-label", "Stat Type:"),
                     selectizeInput("filter_stat_defense", NULL, choices = c("Interceptions", "Fumbles", "Tackles"), NULL, multiple = TRUE)
+                  )
                 )  
               ),
               tags$div(class = "panel-card",
@@ -930,7 +940,7 @@ server <- function(input, output, session) {
                   tags$div(class = "panel-title", tags$span(class = "dot"), "Defense"),
                   tags$div(class = "panel-badge", paste(format(Sys.Date(), "%Y")), "Season")
                 ),
-                tags$div(class = "data-table-wrap", tableOutput("defense_table"))
+                tags$div(class = "data-table-wrap", DTOutput("defense_table"))
               )
             ),
             
@@ -955,9 +965,14 @@ server <- function(input, output, session) {
               ),
               tags$div(class = "panel-card",
                 tags$div(class = "panel-header",
-                  tags$div(class = "panel-title", tags$span(class = "dot"), "Filters"),
+                  tags$div(class = "panel-title", tags$span(class = "dot"), "Filters")
+                ),
+                tags$div(class = "filter-grid",
+                  tags$div(
                     tags$div(class = "section-label", "Search:"),
-                    textInput("search_special", NULL, placeholder = "Name..."),
+                    textInput("search_special", NULL, placeholder = "Name...")
+                  ),
+                  tags$div(
                     tags$div(class = "section-label", "Position:"),
                     selectizeInput("filter_pos_special", NULL, choices = c("K", "P", "PR", "KR", "RET",
                                                                   "QB", "RB", "HB", "TB", "FB", 
@@ -974,9 +989,12 @@ server <- function(input, output, session) {
                                                                   "LB", "LCB", "CB", "RCB", "SS", 
                                                                   "FS", "LDH", "RDH", "LS", "S",
                                                                   "RS", "DB")
-                                                                  , NULL, multiple = TRUE),
-                  tags$div(class = "section-label", "Stat Type:"),
-                  selectizeInput("filter_stat_special", NULL, choices = c("Kicking", "Punting", "Returning"), NULL, multiple = TRUE)
+                                                                  , NULL, multiple = TRUE)
+                  ),
+                  tags$div(
+                    tags$div(class = "section-label", "Stat Type:"),
+                    selectizeInput("filter_stat_special", NULL, choices = c("Kicking", "Punting", "Returning"), NULL, multiple = TRUE)
+                  )
                 )         
               ),
               tags$div(class = "panel-card",
@@ -984,7 +1002,7 @@ server <- function(input, output, session) {
                   tags$div(class = "panel-title", tags$span(class = "dot"), "Special Teams"),
                   tags$div(class = "panel-badge", paste(format(Sys.Date(), "%Y")), "Season")
                 ),
-                tags$div(class = "data-table-wrap", tableOutput("special_table"))
+                tags$div(class = "data-table-wrap", DTOutput("special_table"))
               )       
             ),
             
@@ -1006,11 +1024,18 @@ server <- function(input, output, session) {
               tags$div(class = "section-label", "Active Roster"),
               tags$div(class = "panel-card",
                 tags$div(class = "panel-header",
-                  tags$div(class = "panel-title", tags$span(class = "dot"), "Filters"),
+                  tags$div(class = "panel-title", tags$span(class = "dot"), "Filters")
+                ),
+                tags$div(class = "filter-grid",
+                  tags$div(
                     tags$div(class = "section-label", "Search:"),
-                    textInput("search_roster", NULL, placeholder = "Number, name..."),
+                    textInput("search_roster", NULL, placeholder = "Number, name...")
+                  ),
+                  tags$div(
                     tags$div(class = "section-label", "Age:"),
-                    sliderInput("filter_age", NULL, min = 18, max = 50, value = c(18, 50), step = 1),
+                    sliderInput("filter_age", NULL, min = 18, max = 50, value = c(18, 50), step = 1)
+                  ),
+                  tags$div(
                     tags$div(class = "section-label", "Position:"),
                     selectizeInput("filter_pos_roster", NULL, choices = c("QB", "RB", "HB", "TB", "FB", 
                                                                    "LH", "RH", "BB", "B", "WB", 
@@ -1026,7 +1051,8 @@ server <- function(input, output, session) {
                                                                    "LB", "LCB", "CB", "RCB", "SS", 
                                                                    "FS", "LDH", "RDH", "LS", "S",
                                                                    "RS", "DB", "K", "P", "PR", "KR", "RET")
-                                                                   , NULL, multiple = TRUE),
+                                                                   , NULL, multiple = TRUE)
+                  )
                 )         
               ),
               tags$div(class = "panel-card",
@@ -1034,7 +1060,7 @@ server <- function(input, output, session) {
                   tags$div(class = "panel-title", tags$span(class = "dot"), "Roster"),
                   tags$div(class = "panel-badge", paste(format(Sys.Date(), "%Y")), "Season")
                 ),
-                tags$div(class = "data-table-wrap", tableOutput("roster_table"))
+                tags$div(class = "data-table-wrap", DTOutput("roster_table"))
               )
             ),
             
@@ -1045,19 +1071,33 @@ server <- function(input, output, session) {
               tags$div(class = "section-label", "This Year's Schedule"),
               tags$div(class = "panel-card",
                 tags$div(class = "panel-header",
-                  tags$div(class = "panel-title", tags$span(class = "dot"), "Filters"),
+                  tags$div(class = "panel-title", tags$span(class = "dot"), "Filters")
+                ),
+                tags$div(class = "filter-grid",
+                  tags$div(
                     tags$div(class = "section-label", "Search:"),
-                    textInput("search_schedule", NULL, placeholder = "Opponent, week..."),
+                    textInput("search_schedule", NULL, placeholder = "Opponent, week...")
+                  ),
+                  tags$div(
                     tags$div(class = "section-label", "Week:"),
-                    selectizeInput("filter_week", NULL, choices = c(paste("Week", 1:18)), NULL, multiple = TRUE),
+                    selectizeInput("filter_week", NULL, choices = c(paste("Week", 1:18)), NULL, multiple = TRUE)
+                  ),
+                  tags$div(
                     tags$div(class = "section-label", "Result:"),
-                    selectInput("filter_result", NULL, choices = c("All", "Win", "Loss", "Tie"), selected = "All"),
+                    selectInput("filter_result", NULL, choices = c("All", "Win", "Loss", "Tie"), selected = "All")
+                  ),
+                  tags$div(
                     tags$div(class = "section-label", "Location:"),
-                    selectInput("filter_location", NULL, choices = c("All", "Home", "Away"), selected = "All"),
+                    selectInput("filter_location", NULL, choices = c("All", "Home", "Away"), selected = "All")
+                  ),
+                  tags$div(
                     tags$div(class = "section-label", "Points For:"),
-                    sliderInput("filter_points_for", NULL, min = 0, max = 60, value = c(0, 60), step = 1),
+                    sliderInput("filter_points_for", NULL, min = 0, max = 60, value = c(0, 60), step = 1)
+                  ),
+                  tags$div(
                     tags$div(class = "section-label", "Points Against:"),
                     sliderInput("filter_points_against", NULL, min = 0, max = 60, value = c(0, 60), step = 1)
+                  )
                 )
               ),
               tags$div(class = "panel-card",
@@ -1065,7 +1105,7 @@ server <- function(input, output, session) {
                   tags$div(class = "panel-title", tags$span(class = "dot"), "Season Schedule"),
                   tags$div(class = "panel-badge", paste(format(Sys.Date(), "%Y")), "Season")
                 ),
-                tags$div(class = "data-table-wrap", tableOutput("schedule_table"))
+                tags$div(class = "data-table-wrap", DTOutput("schedule_table"))
               )
             )
           )

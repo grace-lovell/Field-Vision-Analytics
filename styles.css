@@ -224,6 +224,9 @@ body::before {
   flex: 1; height: 1px;
   background: linear-gradient(to right, var(--border-accent), transparent);
 }
+.panel-card + .section-label {
+  margin-top: 32px;
+}
 
 /* ----------------------------------------------------------
    7. STAT CARDS
@@ -880,7 +883,7 @@ table.dash-table tbody td:first-child { font-weight: 600; }
   grid-template-columns: repeat(3, 1fr);
   gap: 16px 24px;
   padding: 16px 0;
-  width: 33%;
+  width: 100%;
 }
 
 @media (max-width: 900px) {
@@ -908,4 +911,88 @@ table.dash-table tbody td:first-child { font-weight: 600; }
 
 .filter-grid .form-control {
   width: 100% !important;
+}
+
+/* ----------------------------------------------------------
+   19. DT TABLE DARK THEME
+   ---------------------------------------------------------- */
+.dataTables_wrapper {
+  color: var(--text-primary) !important;
+  font-family: 'Barlow', sans-serif !important;
+}
+
+.dataTables_wrapper table.dataTable thead th {
+  background: var(--bg-dark) !important;
+  color: var(--team-accent-2) !important;
+  font-family: 'Barlow Condensed', sans-serif !important;
+  font-size: 11px !important;
+  letter-spacing: 2px !important;
+  text-transform: uppercase !important;
+  border-bottom: 1px solid var(--border) !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+}
+
+.dataTables_wrapper table.dataTable thead th:hover {
+  color: var(--team-accent) !important;
+}
+
+.dataTables_wrapper table.dataTable tbody tr {
+  background: var(--bg-card) !important;
+  border-bottom: 1px solid var(--border) !important;
+}
+
+.dataTables_wrapper table.dataTable tbody tr:hover td {
+  background: var(--bg-card-hover) !important;
+}
+
+.dataTables_wrapper table.dataTable tbody td {
+  color: var(--text-primary) !important;
+  font-size: 13px !important;
+  padding: 10px 14px !important;
+}
+
+/* Pagination buttons */
+.dataTables_paginate .paginate_button {
+  background: transparent !important;
+  color: var(--text-muted) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-sm) !important;
+  font-family: 'Barlow Condensed', sans-serif !important;
+}
+
+.dataTables_paginate .paginate_button.current,
+.dataTables_paginate .paginate_button.current:hover {
+  background: var(--team-accent) !important;
+  color: var(--bg-dark) !important;
+  border-color: var(--team-accent) !important;
+}
+
+.dataTables_paginate .paginate_button:hover {
+  background: var(--bg-card-hover) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Row count info */
+.dataTables_info {
+  color: var(--text-muted) !important;
+  font-size: 12px !important;
+  font-family: 'Barlow Condensed', sans-serif !important;
+}
+
+/* Hide DT's built-in search since you have your own */
+.dataTables_filter {
+  display: none !important;
+}
+
+/* Hide entries length selector */
+.dataTables_length {
+  display: none !important;
+}
+
+/* Sort arrows */
+.dataTables_wrapper table.dataTable thead .sorting::after,
+.dataTables_wrapper table.dataTable thead .sorting_asc::after,
+.dataTables_wrapper table.dataTable thead .sorting_desc::after {
+  color: var(--team-accent) !important;
 }
