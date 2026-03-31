@@ -923,7 +923,7 @@ table.dash-table tbody td:first-child { font-weight: 600; }
 
 .dataTables_wrapper table.dataTable thead th {
   background: var(--bg-dark) !important;
-  color: var(--team-accent-2) !important;
+  color: var(--team-accent) !important;
   font-family: 'Barlow Condensed', sans-serif !important;
   font-size: 11px !important;
   letter-spacing: 2px !important;
@@ -934,7 +934,7 @@ table.dash-table tbody td:first-child { font-weight: 600; }
 }
 
 .dataTables_wrapper table.dataTable thead th:hover {
-  color: var(--team-accent) !important;
+  color: var(--team-accent-2) !important;
 }
 
 .dataTables_wrapper table.dataTable tbody tr {
@@ -995,4 +995,57 @@ table.dash-table tbody td:first-child { font-weight: 600; }
 .dataTables_wrapper table.dataTable thead .sorting_asc::after,
 .dataTables_wrapper table.dataTable thead .sorting_desc::after {
   color: var(--team-accent) !important;
+}
+
+/* ----------------------------------------------------------
+   20. TEAM LEADERS
+   ---------------------------------------------------------- */
+.leaders-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.leaders-unit-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--team-accent);
+}
+
+.leader-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.leader-row:last-child {
+  border-bottom: none;
+}
+
+.leader-label {
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-family: 'Barlow Condensed', sans-serif;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.leader-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-top: 2px;
+}
+
+.leader-value {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--team-accent);
 }

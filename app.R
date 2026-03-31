@@ -18,11 +18,13 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
   
-  # This controls which page shows
   showDashboard <- reactiveVal(FALSE)
+  clearCount <- reactiveVal(0)
+  filesCleared <- reactiveVal(FALSE)
   
-  # File counter
   fileCount <- reactive({
+    clearCount()
+    if (filesCleared()) return(0)
     sum(
       !is.null(input$passing_file),
       !is.null(input$rushing_receiving_file),
@@ -45,8 +47,6 @@ server <- function(input, output, session) {
     }
   })
   
-  
-  # When button clicked → show dashboard
   observeEvent(input$launch_dashboard, {
     if (fileCount() == 0) {
       showNotification("Please upload a file before continuing.", type = "error")
@@ -59,14 +59,129 @@ server <- function(input, output, session) {
     if (fileCount() == 0) {
       showNotification("There are no files to clear.", type = "warning")
     } else {
-      reset("passing_file")
-      reset("rushing_receiving_file")
-      reset("defense_file")
-      reset("special_file")
-      reset("roster_file")
-      reset("schedule_file")
+      clearCount(clearCount() + 1)
+      filesCleared(TRUE)
       showNotification("All files have been cleared.", type = "warning")
     }
+  })
+  
+  observeEvent(input$passing_file,           { filesCleared(FALSE) })
+  observeEvent(input$rushing_receiving_file, { filesCleared(FALSE) })
+  observeEvent(input$defense_file,           { filesCleared(FALSE) })
+  observeEvent(input$special_file,           { filesCleared(FALSE) })
+  observeEvent(input$roster_file,            { filesCleared(FALSE) })
+  observeEvent(input$schedule_file,          { filesCleared(FALSE) })
+  
+  output$uploadGrid <- renderUI({
+    clearCount()
+    
+    # ------------------------
+    # UPLOAD FILES GRID
+    # ------------------------
+    tags$div(class = "upload-grid",
+      # ------------------------
+      # OFFENSE - PASSING UPLOAD
+      # ------------------------
+      tags$div(class = "upload-zone offense",
+        tags$div(class = "zone-header",
+          tags$div(class = "zone-icon", "🏈"),
+          tags$div(class = "zone-meta",
+            tags$div(class = "zone-title", "Passing"),
+            tags$div(class = "zone-desc", "Passing, TDs, play efficiency")
+          )
+        ),
+        tags$div(class = "drop-area",
+          fileInput("passing_file", NULL, accept = c(".csv", ".xlsx", ".xls"),
+                    buttonLabel = "📂  Choose File", placeholder = NULL),
+          textOutput("passing_filename")
+        )
+      ),
+      # ------------------------
+      # OFFENSE - RUSHING & RECEIVING UPLOAD
+      # ------------------------
+      tags$div(class = "upload-zone offense",
+        tags$div(class = "zone-header",
+          tags$div(class = "zone-icon", "🏃"),
+          tags$div(class = "zone-meta",
+            tags$div(class = "zone-title", "Rushing & Receiving"),
+            tags$div(class = "zone-desc", "Rushing, recieving yards, TDs, play efficiency")
+          )
+        ),
+        tags$div(class = "drop-area",
+          fileInput("rushing_receiving_file", NULL, accept = c(".csv", ".xlsx", ".xls"),
+                    buttonLabel = "📂  Choose File", placeholder = NULL),
+          textOutput("rushing_receiving_filename")
+        )
+      ),
+      # ------------------------
+      # DEFENSE UPLOAD
+      # ------------------------
+      tags$div(class = "upload-zone defense",
+        tags$div(class = "zone-header",
+          tags$div(class = "zone-icon", "🛡️"),
+          tags$div(class = "zone-meta",
+            tags$div(class = "zone-title", "Defensive Stats"),
+            tags$div(class = "zone-desc", "Tackles, sacks, INTS, pressure rate")
+          )
+        ),
+        tags$div(class = "drop-area",
+          fileInput("defense_file", NULL, accept = c(".csv", ".xlsx", ".xls"),
+                    buttonLabel = "📂  Choose File", placeholder = NULL),
+          textOutput("defense_filename")
+        )
+      ),
+      # ------------------------
+      # SPECIAL TEAMS UPLOAD
+      # ------------------------
+      tags$div(class = "upload-zone special",
+        tags$div(class = "zone-header",
+          tags$div(class = "zone-icon", "🦵️"),
+          tags$div(class = "zone-meta",
+            tags$div(class = "zone-title", "Special Teams"),
+            tags$div(class = "zone-desc", "FG %, returns, coverage, net yardage")
+          )
+        ),
+        tags$div(class = "drop-area",
+          fileInput("special_file", NULL, accept = c(".csv", ".xlsx", ".xls"),
+                    buttonLabel = "📂  Choose File", placeholder = NULL),
+          textOutput("special_filename")
+        )
+      ),
+      # ------------------------
+      # ROSTER UPLOAD
+      # ------------------------
+      tags$div(class = "upload-zone roster",
+        tags$div(class = "zone-header",
+          tags$div(class = "zone-icon", "📋️"),
+          tags$div(class = "zone-meta",
+            tags$div(class = "zone-title", "Roster"),
+            tags$div(class = "zone-desc", "Player stats")
+          )
+        ),
+        tags$div(class = "drop-area",
+          fileInput("roster_file", NULL, accept = c(".csv", ".xlsx", ".xls"),
+                    buttonLabel = "📂  Choose File", placeholder = NULL),
+          textOutput("roster_filename")
+        )
+      ),
+      # ------------------------
+      # SCHEDULE UPLOAD
+      # ------------------------
+      tags$div(class = "upload-zone schedule",
+        tags$div(class = "zone-header",
+          tags$div(class = "zone-icon", "🗓️️"),
+          tags$div(class = "zone-meta",
+            tags$div(class = "zone-title", "Schedule"),
+            tags$div(class = "zone-desc", "Game Schedule")
+          )
+        ),
+        tags$div(class = "drop-area",
+          fileInput("schedule_file", NULL, accept = ".csv",
+                    buttonLabel = "📂  Choose File", placeholder = NULL),
+          textOutput("schedule_filename")
+        )
+      )
+    )
   })
   
   observeEvent(input$back_to_upload, {
@@ -74,33 +189,225 @@ server <- function(input, output, session) {
   })
   
   output$passing_filename <- renderText({
+    if (filesCleared()) return(NULL)
     req(input$passing_file)
     paste("✓", input$passing_file$name)
   })
   
   output$rushing_receiving_filename <- renderText({
+    if (filesCleared()) return(NULL)
     req(input$rushing_receiving_file)
     paste("✓", input$rushing_receiving_file$name)
   })
   
   output$defense_filename <- renderText({
+    if (filesCleared()) return(NULL)
     req(input$defense_file)
     paste("✓", input$defense_file$name)
   })
   
   output$special_filename <- renderText({
+    if (filesCleared()) return(NULL)
     req(input$special_file)
     paste("✓", input$special_file$name)
   })
   
   output$roster_filename <- renderText({
+    if (filesCleared()) return(NULL)
     req(input$roster_file)
     paste("✓", input$roster_file$name)
   })
   
   output$schedule_filename <- renderText({
+    if (filesCleared()) return(NULL)
     req(input$schedule_file)
     paste("✓", input$schedule_file$name)
+  })
+  
+  # -------------------------
+  # OVERVIEW VISUALS
+  # -------------------------
+  visualUnit <- reactiveVal("Points For vs. Points Against")
+  observeEvent(input$visual_next, {
+    current <- visualUnit()
+    visualUnit(switch(current, 
+      "Points For vs. Points Against" = "Score Margin",
+      "Score Margin" = "Offensive Balance Chart",
+      "Offensive Balance Chart" = "Defensive Balance Chart",
+      "Defensive Balance Chart" = "Points For vs. Points Against"
+    ))
+  })
+  
+  observeEvent(input$visual_prev, {
+    current <- visualUnit()
+    visualUnit(switch(current,
+      "Points For vs. Points Against" = "Defensive Balance Chart",
+      "Score Margin" = "Points For vs. Points Against",
+      "Offensive Balance Chart" = "Score Margin",
+      "Defensive Balance Chart" = "Offensive Balance Chart"
+    ))
+  })
+  
+  output$visuals <- renderUI({
+    unit <- visualUnit()
+    tags$div(
+      tags$div(class = "leaders-header",
+               actionButton("visual_prev", "←", class = "btn btn-ghost"),
+               tags$div(class = "leaders-unit-title", unit),
+               actionButton("visual_next", "→", class = "btn btn-ghost")
+      ),
+      plotOutput("active_visual", height = "350px")
+    )
+  })
+  
+  output$active_visual <- renderPlot({
+    unit <- visualUnit()
+    
+    if (unit == "Points For vs. Points Against") {
+      req(input$schedule_file)
+      df <- read.csv(input$schedule_file$datapath)
+      ggplot(df, aes(x = Points.For, y = Points.Against, label = Opponent)) +
+        geom_point(color = "#e8a020", size = 3) +
+        geom_text(nudge_x = 0.5, size = 3, color = "#f0f4ff") +
+        theme_minimal() +
+        theme(
+          plot.background  = element_rect(fill = "transparent", color = NA),
+          panel.background = element_rect(fill = "transparent", color = NA),
+          panel.grid.major = element_line(color = "#8a96b0"),
+          panel.grid.minor = element_blank(),
+          axis.text        = element_text(color = "#f0f4ff", size = 15),
+          axis.title       = element_text(color = "#f0f4ff", size = 16),
+          legend.text      = element_text(color = "#f0f4ff"),
+          legend.position  = "top"
+        )
+      
+    } else if (unit == "Score Margin") {
+      req(input$schedule_file)
+      df <- read.csv(input$schedule_file$datapath)
+      df <- df %>%
+        filter(!is.na(Points.For) & !is.na(Points.Against)) %>%
+        mutate(
+          Margin = Points.For - Points.Against,
+          Result_Color = ifelse(Margin >= 0, "Win", "Loss")
+        )
+      
+      ggplot(df, aes(x = Week, y = Margin, fill = Result_Color)) +
+        geom_col() +
+        geom_hline(yintercept = 0, color = "steelblue", linewidth = 0.5) +
+        geom_text(aes(
+          label = ifelse(Margin >= 0, paste0("+", Margin), Margin),
+          vjust = ifelse(Margin >= 0, -0.5, 1.5)
+        ), size = 3, color = "gray") +
+        scale_fill_manual(values = c("Win" = "green", "Loss" = "red")) +
+        scale_x_continuous(breaks = df$Week) +
+        labs(x = "Week", y = "Point Margin", fill = NULL) +
+        theme_minimal() +
+        theme(
+          plot.background  = element_rect(fill = "transparent", color = NA),
+          panel.background = element_rect(fill = "transparent", color = NA),
+          panel.grid.major = element_line(color = "white"),
+          panel.grid.minor = element_blank(),
+          axis.text        = element_text(color = "steelblue", size = 10),
+          axis.title       = element_text(color = "steelblue", size = 11),
+          legend.text      = element_text(color = "steelblue"),
+          legend.position  = "top"
+        )
+      
+    } else if (unit == "Offensive Balance Chart") {
+      # your chart here
+      
+    } else if (unit == "Defensive Balance Chart") {
+      # your chart here
+      
+    }
+  }, bg = "transparent")
+  
+  # -------------------------
+  # OVERVIEW LEADERS
+  # -------------------------
+  leaderUnit <- reactiveVal("Offense")
+  observeEvent(input$leader_next, {
+    current <- leaderUnit()
+    leaderUnit(switch(current,
+      "Offense" = "Defense",
+      "Defense" = "Special Teams",
+      "Special Teams" = "Offense"
+    ))
+  })
+  
+  observeEvent(input$leader_prev, {
+    current <- leaderUnit()
+    leaderUnit(switch(current,
+      "Offense" = "Special Teams",
+      "Defense" = "Offense",
+      "Special Teams" = "Defense"
+    ))
+  })
+  
+  output$team_leaders <- renderUI({
+    unit <- leaderUnit()
+  
+    if (unit == "Offense") {
+      req(input$passing_file, input$rushing_receiving_file)
+      pass <- read.csv(input$passing_file$datapath)
+      rush <- read.csv(input$rushing_receiving_file$datapath)
+      top_passer <- pass[which.max(pass$Yards), ]
+      top_rusher <- rush[which.max(rush$Rushing.Yards), ]
+      top_receiver <- rush[which.max(rush$Reception.Yards), ]
+      leaders <- list(
+        list(label = "Passing Yards", player = top_passer$Player, value = top_passer$Yards),
+        list(label = "Rushing Yards", player = top_rusher$Player, value = top_rusher$Rushing.Yards),
+        list(label = "Receiving Yards", player = top_receiver$Player, value = top_receiver$Reception.Yards)
+      )
+    } else if (unit == "Defense") {
+      req(input$defense_file)
+      def <- read.csv(input$defense_file$datapath)
+      top_tackler <- def[which.max(def$Combined.Tackles), ]
+      top_sacker <- def[which.max(def$Sacks), ]
+      top_int <- def[which.max(def$Interceptions), ]
+      leaders <- list(
+        list(label = "Tackles", player = top_tackler$Player, value = top_tackler$Combined.Tackles),
+        list(label = "Sacks", player = top_sacker$Player, value = top_sacker$Sacks),
+        list(label = "Interceptions", player = top_int$Player, value = top_int$Interceptions)
+      )
+    } else {
+      req(input$special_file)
+      special <- read.csv(input$special_file$datapath)
+      kickers <- special[special$Pos %in% c("K"), ]
+      punters <- special[special$Pos %in% c("P"), ]
+      returners <- special[special$Pos %in% c("KR", "PR", "RET", "WR", "RB"), ]
+      top_kicker <- if (nrow(kickers) > 0) kickers[which.max(kickers$Field.Goals.Made), ] else special[which.max(special$Field.Goals.Made), ]
+      top_punter <- if (nrow(punters) > 0) punters[which.max(punters$Punt.Yardage), ] else special[which.max(special$Punt.Yardage), ]
+      top_kreturner <- if(nrow(returners) > 0) returners[which.max(returners$Kickoff.Return.Yardage), ] else special[which.max(special$Kickoff.Return.Yardage), ]
+      top_preturner <- if(nrow(returners) > 0) returners[which.max(returners$Punt.Return.Yardage), ] else special[which.max(special$Punt.Return.Yardage), ]
+      leaders <- list(
+        list(label = "Kicker", player = top_kicker$Player, value = top_kicker$Field.Goals.Made),
+        list(label = "Punter", player = top_punter$Player, value = top_punter$Punt.Yardage),
+        list(label = "Kick Returner", player = top_kreturner$Player, value = top_kreturner$Kickoff.Return.Yardage),
+        list(label = "Punt Returner", player = top_preturner$Player, value = top_preturner$Punt.Return.Yardage)
+      )
+    }
+    
+    tags$div(
+      tags$div(class = "leaders-header",
+        actionButton("leader_prev", "←", class = "btn btn-ghost"),
+        tags$div(class = "leaders-unit-title", unit),
+        actionButton("leader_next", "→", class = "btn btn-ghost")
+      ),
+      tags$div(
+        lapply(leaders, function(l) {
+          tags$div(class = "leader-row",
+            tags$div(
+              tags$div(class = "leader-label", l$label),
+              tags$div(class = "leader-name",  as.character(l$player))
+            ),
+            tags$div(class = "leader-value",
+              format(as.numeric(l$value), big.mark = ",")
+            )
+          )
+        })
+      )
+    )
   })
   
   # -------------------------
@@ -316,8 +623,10 @@ server <- function(input, output, session) {
       df <- df[df$Pos %in% input$filter_pos_passing, ]
     }
     
+    df <- cbind("Row #" = 1:nrow(df), df)
+    
     df
-  }, options = list(paging = FALSE, scrollX = TRUE, scrollY = "800px"))
+  }, options = list(paging = FALSE, scrollX = TRUE, scrollY = "800px"), rownames = FALSE)
   
   # -------------------------
   # RUSHING & RECEIVING TABLE
@@ -355,8 +664,10 @@ server <- function(input, output, session) {
     }
     df <- df[, selected_cols, drop = FALSE]
     
+    df <- cbind("Row #" = 1:nrow(df), df)
+    
     df
-  }, options = list(paging = FALSE, scrollX = TRUE, scrollY = "800px"))
+  }, options = list(paging = FALSE, scrollX = TRUE, scrollY = "800px"), rownames = FALSE)
   
   # -------------------------
   # DEFENSE TABLE
@@ -410,8 +721,10 @@ server <- function(input, output, session) {
     }
     df <- df[, selected_cols, drop = FALSE]
     
+    df <- cbind("Row #" = 1:nrow(df), df)
+    
     df
-  }, options = list(paging = FALSE, scrollX = TRUE, scrollY = "800px"))
+  }, options = list(paging = FALSE, scrollX = TRUE, scrollY = "800px"), rownames = FALSE)
 
   # -------------------------
   # SPECIAL TEAMS TABLE
@@ -457,9 +770,10 @@ server <- function(input, output, session) {
     }
     df <- df[, selected_cols, drop = FALSE]
     
+    df <- cbind("Row #" = 1:nrow(df), df)
+    
     df
-  }, options = list(paging = FALSE, scrollX = TRUE, scrollY = "800px"))
-  
+  }, options = list(paging = FALSE, scrollX = TRUE, scrollY = "800px"), rownames = FALSE)
   
   # -------------------------
   # ROSTER TABLE
@@ -484,8 +798,10 @@ server <- function(input, output, session) {
       df <- df[df$Pos %in% input$filter_pos_roster, ]
     }
     
+    df <- cbind("Row #" = 1:nrow(df), df)
+    
     df
-  }, options = list(paging = FALSE, scrollX = TRUE, scrollY = "800px"))
+  }, options = list(paging = FALSE, scrollX = TRUE, scrollY = "800px"), rownames = FALSE)
   
   # -------------------------
   # SCHEDULE TABLE
@@ -525,7 +841,7 @@ server <- function(input, output, session) {
     }
     
     df
-  }, options = list(paging = FALSE, scrollX = TRUE, scrollY = "800px"))
+  }, options = list(paging = FALSE, scrollX = TRUE, scrollY = "800px"), rownames = FALSE)
   
   output$pageContent <- renderUI({
     
@@ -578,114 +894,10 @@ server <- function(input, output, session) {
             tags$div(class = "divider-label", "Select Files to Upload"),
             tags$div(class = "divider-line")
           ),
-          
           # ------------------------
-          # UPLOAD FILES GRID
+          # UPLOAD GRID
           # ------------------------
-          tags$div(class = "upload-grid",
-            # ------------------------
-            # OFFENSE - PASSING UPLOAD
-            # ------------------------
-            tags$div(class = "upload-zone offense",
-              tags$div(class = "zone-header",
-                tags$div(class = "zone-icon", "🏈"),
-                tags$div(class = "zone-meta",
-                  tags$div(class = "zone-title", "Passing"),
-                  tags$div(class = "zone-desc", "Passing, TDs, play efficiency")
-                )
-              ),
-              tags$div(class = "drop-area",
-                fileInput("passing_file", NULL, accept = c(".csv", ".xlsx", ".xls"),
-                          buttonLabel = "📂  Choose File", placeholder = NULL),
-                textOutput("passing_filename")
-              )
-            ),
-            # ------------------------
-            # OFFENSE - RUSHING & RECEIVING UPLOAD
-            # ------------------------
-            tags$div(class = "upload-zone offense",
-              tags$div(class = "zone-header",
-                tags$div(class = "zone-icon", "🏃"),
-                tags$div(class = "zone-meta",
-                  tags$div(class = "zone-title", "Rushing & Receiving"),
-                  tags$div(class = "zone-desc", "Rushing, recieving yards, TDs, play efficiency")
-                )
-              ),
-              tags$div(class = "drop-area",
-                fileInput("rushing_receiving_file", NULL, accept = c(".csv", ".xlsx", ".xls"),
-                          buttonLabel = "📂  Choose File", placeholder = NULL),
-                textOutput("rushing_receiving_filename")
-              )
-            ),
-            # ------------------------
-            # DEFENSE UPLOAD
-            # ------------------------
-            tags$div(class = "upload-zone defense",
-              tags$div(class = "zone-header",
-                tags$div(class = "zone-icon", "🛡️"),
-                tags$div(class = "zone-meta",
-                  tags$div(class = "zone-title", "Defensive Stats"),
-                  tags$div(class = "zone-desc", "Tackles, sacks, INTS, pressure rate")
-                )
-              ),
-              tags$div(class = "drop-area",
-                fileInput("defense_file", NULL, accept = c(".csv", ".xlsx", ".xls"),
-                          buttonLabel = "📂  Choose File", placeholder = NULL),
-                textOutput("defense_filename")
-              )
-            ),
-            # ------------------------
-            # SPECIAL TEAMS UPLOAD
-            # ------------------------
-            tags$div(class = "upload-zone special",
-              tags$div(class = "zone-header",
-                tags$div(class = "zone-icon", "🦵️"),
-                tags$div(class = "zone-meta",
-                  tags$div(class = "zone-title", "Special Teams"),
-                  tags$div(class = "zone-desc", "FG %, returns, coverage, net yardage")
-                )
-              ),
-              tags$div(class = "drop-area",
-                fileInput("special_file", NULL, accept = c(".csv", ".xlsx", ".xls"),
-                          buttonLabel = "📂  Choose File", placeholder = NULL),
-                textOutput("special_filename")
-              )
-            ),
-            # ------------------------
-            # ROSTER UPLOAD
-            # ------------------------
-            tags$div(class = "upload-zone roster",
-              tags$div(class = "zone-header",
-                tags$div(class = "zone-icon", "📋️"),
-                tags$div(class = "zone-meta",
-                  tags$div(class = "zone-title", "Roster"),
-                  tags$div(class = "zone-desc", "Player stats")
-                )
-              ),
-              tags$div(class = "drop-area",
-                fileInput("roster_file", NULL, accept = c(".csv", ".xlsx", ".xls"),
-                          buttonLabel = "📂  Choose File", placeholder = NULL),
-                textOutput("roster_filename")
-              )
-            ),
-            # ------------------------
-            # SCHEDULE UPLOAD
-            # ------------------------
-            tags$div(class = "upload-zone schedule",
-              tags$div(class = "zone-header",
-                tags$div(class = "zone-icon", "🗓️️"),
-                tags$div(class = "zone-meta",
-                  tags$div(class = "zone-title", "Schedule"),
-                  tags$div(class = "zone-desc", "Game Schedule")
-                )
-              ),
-              tags$div(class = "drop-area",
-                fileInput("schedule_file", NULL, accept = ".csv",
-                          buttonLabel = "📂  Choose File", placeholder = NULL),
-                textOutput("schedule_filename")
-              )
-            )
-          ),
+          uiOutput("uploadGrid"),
           # ------------------------
           # ACTION ROW 
           # ------------------------
@@ -758,7 +970,25 @@ server <- function(input, output, session) {
                   tags$div(class = "stat-label", "Sack Differential"),
                   tags$div(class = "stat-value", uiOutput("sack_diff"))
                 )
-              )    
+              ),    
+              tags$div(class = "section-label", "Team Leaders"),
+              tags$div(class = "panel-card",
+                tags$div(class = "panel-header",
+                  tags$div(class = "panel-title",
+                    tags$div(class = "dot"), "Leaders"
+                  )
+                ),
+                uiOutput("team_leaders")
+              ),
+              tags$div(class = "section-label", "Team Visuals"),
+              tags$div(class = "panel-card",
+                tags$div(class = "panel-header",
+                  tags$div(class = "panel-title",
+                    tags$div(class = "dot"), "Visualizations"
+                  )
+                ),
+                uiOutput("visuals")
+              )
             ),
             
             # -------------------------
