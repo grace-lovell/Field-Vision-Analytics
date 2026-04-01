@@ -1,6 +1,7 @@
 library(tidyverse)
 library(shiny)
 library(DT)
+library(plotly)
 
 ui <- fluidPage(
   # -------------------------
@@ -10,7 +11,7 @@ ui <- fluidPage(
     tags$link(rel = "preconnect", href = "https://fonts.googleapis.com"),
     tags$link(rel = "stylesheet",
               href = "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap"),
-    tags$link(rel = "stylesheet", href = "styles.css")
+    tags$link(rel = "stylesheet", href = "styles.css?v=2")
   ),
   
   uiOutput("pageContent")
@@ -65,12 +66,33 @@ server <- function(input, output, session) {
     }
   })
   
-  observeEvent(input$passing_file,           { filesCleared(FALSE) })
+  observeEvent(input$passing_file, { filesCleared(FALSE) })
   observeEvent(input$rushing_receiving_file, { filesCleared(FALSE) })
-  observeEvent(input$defense_file,           { filesCleared(FALSE) })
-  observeEvent(input$special_file,           { filesCleared(FALSE) })
-  observeEvent(input$roster_file,            { filesCleared(FALSE) })
-  observeEvent(input$schedule_file,          { filesCleared(FALSE) })
+  observeEvent(input$defense_file, { filesCleared(FALSE) })
+  observeEvent(input$special_file, { filesCleared(FALSE) })
+  observeEvent(input$roster_file, { filesCleared(FALSE) })
+  observeEvent(input$schedule_file, { filesCleared(FALSE) })
+  
+  observeEvent(input$help_content, {
+    showModal(modalDialog(
+      title = NULL,
+      tags$h4("User Manual & CSV Templates", 
+              style = "color: var(--team-primary); font-family: 'Barlow Condensed', sans-serif; font-weight: 700;"),
+      tags$p("Instructions on how to upload data and use the visualizations:"),
+      tags$ul(
+        tags$li(tags$a("Download User Manual", href = "Field Vision Analytics - User Manual.pdf", download = NA)),
+        tags$li(tags$a("Download Passing Template", href = "Field Vision Analytics Templates - Passing.csv", download = NA)),
+        tags$li(tags$a("Download Rushing/Receiving Template", href = "Field Vision Analytics Templates - Rushing & Receiving.csv", download = NA)),
+        tags$li(tags$a("Download Defense Template", href = "Field Vision Analytics Templates - Defense.csv", download = NA)),
+        tags$li(tags$a("Download Special Teams Template", href = "Field Vision Analytics Templates - Special Teams.csv", download = NA)),
+        tags$li(tags$a("Download Roster Template", href = "Field Vision Analytics Templates - Roster.csv", download = NA)),
+        tags$li(tags$a("Download Schedule Template", href = "Field Vision Analytics Templates - Schedule.csv", download = NA))
+      ),
+      easyClose = TRUE,
+      footer = modalButton("Close"),
+      class = "help-modal"
+    ))
+  })
   
   output$uploadGrid <- renderUI({
     clearCount()
@@ -87,11 +109,11 @@ server <- function(input, output, session) {
           tags$div(class = "zone-icon", "🏈"),
           tags$div(class = "zone-meta",
             tags$div(class = "zone-title", "Passing"),
-            tags$div(class = "zone-desc", "Passing, TDs, play efficiency")
+            tags$div(class = "zone-desc", "Passing Yards, Touchdowns, and Interceptions")
           )
         ),
         tags$div(class = "drop-area",
-          fileInput("passing_file", NULL, accept = c(".csv", ".xlsx", ".xls"),
+          fileInput("passing_file", NULL, accept = ".csv",
                     buttonLabel = "📂  Choose File", placeholder = NULL),
           textOutput("passing_filename")
         )
@@ -104,11 +126,11 @@ server <- function(input, output, session) {
           tags$div(class = "zone-icon", "🏃"),
           tags$div(class = "zone-meta",
             tags$div(class = "zone-title", "Rushing & Receiving"),
-            tags$div(class = "zone-desc", "Rushing, recieving yards, TDs, play efficiency")
+            tags$div(class = "zone-desc", "Rushing & Receiving Yards, Touchdowns, and Fumbles")
           )
         ),
         tags$div(class = "drop-area",
-          fileInput("rushing_receiving_file", NULL, accept = c(".csv", ".xlsx", ".xls"),
+          fileInput("rushing_receiving_file", NULL, accept = ".csv",
                     buttonLabel = "📂  Choose File", placeholder = NULL),
           textOutput("rushing_receiving_filename")
         )
@@ -121,11 +143,11 @@ server <- function(input, output, session) {
           tags$div(class = "zone-icon", "🛡️"),
           tags$div(class = "zone-meta",
             tags$div(class = "zone-title", "Defensive Stats"),
-            tags$div(class = "zone-desc", "Tackles, sacks, INTS, pressure rate")
+            tags$div(class = "zone-desc", "Tackles, Sacks, Interceptions, and Forced Fumbles")
           )
         ),
         tags$div(class = "drop-area",
-          fileInput("defense_file", NULL, accept = c(".csv", ".xlsx", ".xls"),
+          fileInput("defense_file", NULL, accept = ".csv",
                     buttonLabel = "📂  Choose File", placeholder = NULL),
           textOutput("defense_filename")
         )
@@ -138,11 +160,11 @@ server <- function(input, output, session) {
           tags$div(class = "zone-icon", "🦵️"),
           tags$div(class = "zone-meta",
             tags$div(class = "zone-title", "Special Teams"),
-            tags$div(class = "zone-desc", "FG %, returns, coverage, net yardage")
+            tags$div(class = "zone-desc", "Field Goal Percentage, Returns, and Yardage")
           )
         ),
         tags$div(class = "drop-area",
-          fileInput("special_file", NULL, accept = c(".csv", ".xlsx", ".xls"),
+          fileInput("special_file", NULL, accept = ".csv",
                     buttonLabel = "📂  Choose File", placeholder = NULL),
           textOutput("special_filename")
         )
@@ -155,11 +177,11 @@ server <- function(input, output, session) {
           tags$div(class = "zone-icon", "📋️"),
           tags$div(class = "zone-meta",
             tags$div(class = "zone-title", "Roster"),
-            tags$div(class = "zone-desc", "Player stats")
+            tags$div(class = "zone-desc", "Player Stats")
           )
         ),
         tags$div(class = "drop-area",
-          fileInput("roster_file", NULL, accept = c(".csv", ".xlsx", ".xls"),
+          fileInput("roster_file", NULL, accept = ".csv",
                     buttonLabel = "📂  Choose File", placeholder = NULL),
           textOutput("roster_filename")
         )
@@ -256,30 +278,36 @@ server <- function(input, output, session) {
                tags$div(class = "leaders-unit-title", unit),
                actionButton("visual_next", "→", class = "btn btn-ghost")
       ),
-      plotOutput("active_visual", height = "350px")
+      plotlyOutput("active_visual", height = "1000px")
     )
   })
   
-  output$active_visual <- renderPlot({
+  output$active_visual <- renderPlotly({
     unit <- visualUnit()
     
-    if (unit == "Points For vs. Points Against") {
+    theme_fva <- function() {
+      theme_minimal() +
+        theme(
+          plot.background   = element_rect(fill = "transparent", color = NA),
+          panel.background  = element_rect(fill = "transparent", color = NA),
+          panel.grid.major  = element_line(color = alpha("#f0f4ff", 0.08)),
+          panel.grid.minor  = element_blank(),
+          axis.text         = element_text(color = "#8a96b0", size = 10),
+          axis.title        = element_text(color = "#8a96b0", size = 11),
+          legend.text       = element_text(color = "#8a96b0"),
+          legend.background = element_rect(fill = "transparent", color = NA),
+          legend.position   = "top"
+        )
+    }
+    
+    plot <- if (unit == "Points For vs. Points Against") {
       req(input$schedule_file)
       df <- read.csv(input$schedule_file$datapath)
       ggplot(df, aes(x = Points.For, y = Points.Against, label = Opponent)) +
-        geom_point(color = "#e8a020", size = 3) +
-        geom_text(nudge_x = 0.5, size = 3, color = "#f0f4ff") +
-        theme_minimal() +
-        theme(
-          plot.background  = element_rect(fill = "transparent", color = NA),
-          panel.background = element_rect(fill = "transparent", color = NA),
-          panel.grid.major = element_line(color = "#8a96b0"),
-          panel.grid.minor = element_blank(),
-          axis.text        = element_text(color = "#f0f4ff", size = 15),
-          axis.title       = element_text(color = "#f0f4ff", size = 16),
-          legend.text      = element_text(color = "#f0f4ff"),
-          legend.position  = "top"
-        )
+        geom_point(color = "#1e90ff", size = 3) +
+        geom_text(nudge_x = 1.5, size = 6, color = "#f0f4ff", fontface = "bold") +
+        labs(x = "Points For", y = "Points Against") +
+        theme_fva()
       
     } else if (unit == "Score Margin") {
       req(input$schedule_file)
@@ -288,39 +316,98 @@ server <- function(input, output, session) {
         filter(!is.na(Points.For) & !is.na(Points.Against)) %>%
         mutate(
           Margin = Points.For - Points.Against,
-          Result_Color = ifelse(Margin >= 0, "Win", "Loss")
+          Result_Color = ifelse(Margin >= 0, "Win", "Loss"),
+          label = ifelse(Margin >= 0, paste0("+", Margin), Margin),
+          label_y = Margin / 2
         )
       
       ggplot(df, aes(x = Week, y = Margin, fill = Result_Color)) +
         geom_col() +
-        geom_hline(yintercept = 0, color = "steelblue", linewidth = 0.5) +
-        geom_text(aes(
-          label = ifelse(Margin >= 0, paste0("+", Margin), Margin),
-          vjust = ifelse(Margin >= 0, -0.5, 1.5)
-        ), size = 3, color = "gray") +
-        scale_fill_manual(values = c("Win" = "green", "Loss" = "red")) +
+        geom_hline(yintercept = 0, linewidth = 0.5) +
+        geom_text(
+          aes(y = label_y, label = label),  # Use label_y to center
+          size = 6,
+          color = "#1a3a5c",
+          fontface = "bold"
+        ) +
+        scale_fill_manual(values = c("Win" = "lightgreen", "Loss" = "#c0392b")) +
         scale_x_continuous(breaks = df$Week) +
         labs(x = "Week", y = "Point Margin", fill = NULL) +
-        theme_minimal() +
-        theme(
-          plot.background  = element_rect(fill = "transparent", color = NA),
-          panel.background = element_rect(fill = "transparent", color = NA),
-          panel.grid.major = element_line(color = "white"),
-          panel.grid.minor = element_blank(),
-          axis.text        = element_text(color = "steelblue", size = 10),
-          axis.title       = element_text(color = "steelblue", size = 11),
-          legend.text      = element_text(color = "steelblue"),
-          legend.position  = "top"
-        )
+        theme_fva()
       
     } else if (unit == "Offensive Balance Chart") {
-      # your chart here
+      req(input$rushing_receiving_file)
+      df <- read.csv(input$rushing_receiving_file$datapath)
       
+      total_rush <- sum(df$Rushing.Yards, na.rm = TRUE)
+      total_receive <- sum(df$Reception.Yards, na.rm = TRUE)
+      
+      total_df <- data.frame(
+        Category = c("Rushing", "Receiving"),
+        Yards = c(total_rush, total_receive)
+      )
+      
+      ggplot(total_df, aes(x = "Offense", y = Yards, fill = Category)) +
+        geom_col(width = 0.5) +
+        geom_text(aes(label = paste0(Category, "\n", format(Yards, big.mark = ","), " yds")),
+                  position = position_stack(vjust = 0.5),
+                  color = "#1a3a5c", size = 6, fontface = "bold") +
+        scale_fill_manual(values = c(
+          "Rushing" = "#e8a020",
+          "Receiving" = "#1e90ff"
+        )) +
+        coord_flip() +
+        labs(x = NULL, y = "Yards", fill = NULL) +
+        theme_fva() +
+        theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
+
     } else if (unit == "Defensive Balance Chart") {
-      # your chart here
+      req(input$defense_file)
+      df <- read.csv(input$defense_file$datapath)
       
+      df <- df %>%
+        mutate(Group = case_when(
+          Pos %in% c("DL", "DT", "DE", "DG", "NT", "MG", "LDT", "RDT", "LE", "RE", "LDE", "RDE") ~ "D-Line",
+          Pos %in% c("LB", "OLB", "ILB", "MLB", "LLB", "RLB", "WILL", "MIKE", "SAM", "LOLB", "LILB", "ROLB", "RILB", "SLB", "WLB", "RUSH") ~ "Linebackers",
+          Pos %in% c("DB", "CB", "S", "SS", "FS", "LCB", "RCB", "RS", "LDH", "RDH") ~ "Defensive Backs",
+          TRUE ~ "Other"
+        ))
+      
+      grouped_df <- df %>%
+        group_by(Group) %>%
+        summarise(
+          Tackles = sum(Combined.Tackles, na.rm = TRUE),
+          Sacks = sum(Sacks, na.rm = TRUE),
+          Interceptions = sum(Interceptions, na.rm = TRUE),
+          ForcedFumbles = sum(Forced.Fumbles, na.rm = TRUE),
+          .groups = "drop"
+        ) %>%
+        pivot_longer(cols = c(Tackles, Sacks, Interceptions, ForcedFumbles),
+                     names_to = "Stat",
+                     values_to = "Value")
+      
+      ggplot(grouped_df, aes(x = Group, y = Value, fill = Stat)) +
+        geom_col(position = "stack", width = 0.6) +
+        geom_text(aes(label = ifelse(Value >= 10, Value, "")),
+                  position = position_stack(vjust = 0.5),
+                  color = "#1a3a5c", size = 6, fontface = "bold") +
+        scale_fill_manual(values = c(
+          "Tackles" = "#e8a020",
+          "Sacks" = "#1e90ff",
+          "Interceptions" = "#c0392b",
+          "ForcedFumbles" = "lightgreen"
+        )) +
+        labs(x = NULL, y = "Count", fill = NULL) +
+        theme_fva()
     }
-  }, bg = "transparent")
+    ggplotly(plot, tooltip = "all") %>%
+      layout(
+        paper_bgcolor = "rgba(0,0,0,0)",
+        plot_bgcolor = "rgba(0,0,0,0)",
+        font = list(color = "#8a96b0"),
+        legend = list(font = list(color = "#8a96b0"))
+      )
+  })
   
   # -------------------------
   # OVERVIEW LEADERS
@@ -346,7 +433,7 @@ server <- function(input, output, session) {
   
   output$team_leaders <- renderUI({
     unit <- leaderUnit()
-  
+
     if (unit == "Offense") {
       req(input$passing_file, input$rushing_receiving_file)
       pass <- read.csv(input$passing_file$datapath)
@@ -362,9 +449,18 @@ server <- function(input, output, session) {
     } else if (unit == "Defense") {
       req(input$defense_file)
       def <- read.csv(input$defense_file$datapath)
-      top_tackler <- def[which.max(def$Combined.Tackles), ]
-      top_sacker <- def[which.max(def$Sacks), ]
-      top_int <- def[which.max(def$Interceptions), ]
+      max_tackles <- max(def$Combined.Tackles, na.rm = TRUE)
+      top_tacklers <- def[def$Combined.Tackles == max_tackles, ]
+      top_tackler <- if (nrow(top_tacklers) > 1) top_tacklers[which.max(top_tacklers$Forced.Fumbles), ] else top_tacklers
+      max_sacks <- max(def$Sacks, na.rm = TRUE)
+      top_sackers <- def[def$Sacks == max_sacks, ]
+      top_sacker <- if (nrow(top_sackers) > 1) top_sackers[which.max(top_sackers$Forced.Fumbles), ] else top_sackers
+      max_ints <- max(def$Interceptions, na.rm = TRUE)
+      top_intercepters <- def[def$Interceptions == max_ints, ]
+      top_int <- if (nrow(top_intercepters) > 1) top_intercepters[which.max(top_intercepters$Combined.Tackles), ] else top_intercepters
+      # top_tackler <- def[which.max(def$Combined.Tackles), ]
+      # top_sacker <- def[which.max(def$Sacks), ]
+      # top_int <- def[which.max(def$Interceptions), ]
       leaders <- list(
         list(label = "Tackles", player = top_tackler$Player, value = top_tackler$Combined.Tackles),
         list(label = "Sacks", player = top_sacker$Player, value = top_sacker$Sacks),
@@ -387,7 +483,7 @@ server <- function(input, output, session) {
         list(label = "Punt Returner", player = top_preturner$Player, value = top_preturner$Punt.Return.Yardage)
       )
     }
-    
+
     tags$div(
       tags$div(class = "leaders-header",
         actionButton("leader_prev", "←", class = "btn btn-ghost"),
@@ -846,9 +942,9 @@ server <- function(input, output, session) {
   output$pageContent <- renderUI({
     
     if (!showDashboard()) {
-      # -------------------------
-      # LANDING / UPLOAD SCREEN
-      # -------------------------
+    # -------------------------
+    # LANDING / UPLOAD SCREEN
+    # -------------------------
       fluidPage(
         tags$div(class = "bg-glow"),
         # -------------------------
@@ -864,6 +960,10 @@ server <- function(input, output, session) {
           tags$nav(class = "header-nav",
             actionButton("launch_dashboard", "Launch Dashboard", 
               class = "nav-btn primary")     
+          ),
+          tags$div(class = "upload-header",
+            actionButton("help_content", "New Here?", 
+              class = "nav-btn ghost")
           ),
           tags$div(class = "season-badge", paste(format(Sys.Date(), "%Y")), "Season")
         ),
@@ -933,7 +1033,12 @@ server <- function(input, output, session) {
             )
           ),
           tags$nav(class = "header-nav",
-                   actionButton("back_to_upload", "← Upload Data", class = "nav-btn ghost")
+            actionButton("back_to_upload", "← Upload Data", 
+              class = "nav-btn ghost")
+          ),
+          tags$div(class = "upload-header",
+            actionButton("help_content", "New Here?", 
+              class = "nav-btn ghost")
           ),
           tags$div(class = "season-badge", paste(format(Sys.Date(), "%Y")), "Season")
         ),

@@ -13,7 +13,7 @@ library(tidyverse)
 
 ```{r}
 passing <- read_csv("Passing.txt")
-rushing_receiving <- read_csv("Rushing_Receiving.txt")
+rushing_receiving <- read_csv("rushing_receiving.txt")
 ```
 
 ```{r}

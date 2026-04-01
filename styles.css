@@ -10,7 +10,7 @@
 :root {
   --team-primary:   #1a3a5c;
   --team-accent:    #e8a020;
-  --team-accent-2:  #c0392b;
+  --team-accent-2:  #1e90ff;
 
   --bg-dark:        #0d1117;
   --bg-panel:       #161c26;
@@ -215,14 +215,14 @@ body::before {
   font-family: 'Barlow Condensed', sans-serif;
   font-size: 11px; font-weight: 700;
   letter-spacing: 3px; text-transform: uppercase;
-  color: var(--team-accent);
+  color: var(--team-accent-2);
   margin-bottom: 16px;
   display: flex; align-items: center; gap: 10px;
 }
 .section-label::after {
   content: '';
   flex: 1; height: 1px;
-  background: linear-gradient(to right, var(--border-accent), transparent);
+  background: linear-gradient(to right, var(--team-accent-2), transparent);
 }
 .panel-card + .section-label {
   margin-top: 32px;
@@ -597,15 +597,15 @@ table.dash-table tbody td:first-child { font-weight: 600; }
 
 .upload-zone:hover {
   background: var(--bg-card-hover);
-  border-color: rgba(192,57,43,0.3);
+  border-color: rgba(30, 144, 255, 0.3);
   box-shadow: var(--shadow-card);
   transform: translateY(-3px);
 }
 
 .upload-zone.drag-over {
   border-color: var(--team-accent-2) !important;
-  background: rgba(192,57,43,0.06) !important;
-  box-shadow: 0 0 28px rgba(192,57,43,0.2) !important;
+  background: rgba(30, 144, 255, 0.06) !important;
+  box-shadow: 0 0 28px rgba(30, 144, 255, 0.3) !important;
 }
 
 .zone-header { display: flex; align-items: flex-start; gap: 14px; }
@@ -615,8 +615,8 @@ table.dash-table tbody td:first-child { font-weight: 600; }
   border-radius: var(--radius-md);
   display: flex; align-items: center; justify-content: center;
   font-size: 20px;
-  background: rgba(192,57,43,0.1);
-  border: 1px solid rgba(192,57,43,0.2);
+  background: rgba(30, 144, 255, 0.06);
+  border: 1px solid rgba(30, 144, 255, 0.3);
 }
 
 .zone-meta { flex: 1; }
@@ -641,7 +641,7 @@ table.dash-table tbody td:first-child { font-weight: 600; }
    ---------------------------------------------------------- */
 .drop-area {
   flex: 1;
-  border: 1.5px dashed rgba(255,255,255,0.1);
+  border: 1.5px dashed rgba(30, 144, 255, 0.06);
   border-radius: var(--radius-md);
   padding: 4px;
   cursor: pointer;
@@ -654,7 +654,7 @@ table.dash-table tbody td:first-child { font-weight: 600; }
 
 .drop-area:hover {
   border-color: var(--team-accent-2);
-  background: rgba(192,57,43,0.04);
+  background: rgba(30, 144, 255, 0.06);
 }
 
 /* Hide Shiny's default filename text box */
@@ -1048,4 +1048,61 @@ table.dash-table tbody td:first-child { font-weight: 600; }
   font-size: 28px;
   font-weight: 800;
   color: var(--team-accent);
+}
+
+/* ----------------------------------------------------------
+   21. HELP SCREEN MODAL
+   ---------------------------------------------------------- */
+.help-modal .modal-content {
+  background: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+  border-radius: var(--radius-lg) !important;
+  border: 1px solid var(--border-accent) !important;
+  font-family: 'Barlow', sans-serif !important;
+}
+
+.help-modal .modal-header {
+  border-bottom: 1px solid var(--border) !important;
+  background: var(--bg-card) !important;
+}
+
+.help-modal .modal-title {
+  color: var(--team-primary) !important;
+  font-family: 'Barlow Condensed', sans-serif !important;
+  font-weight: 700 !important;
+  letter-spacing: 1px !important;
+  text-transform: uppercase !important;
+}
+
+.help-modal .modal-body {
+  background: var(--bg-card) !important;
+  padding: 24px !important;
+}
+
+.help-modal .modal-footer {
+  background: var(--bg-card) !important;
+  border-top: 1px solid var(--border) !important;
+}
+
+.help-modal p {
+  color: var(--team-accent) !important;
+  font-weight: 800 !important;
+  margin-bottom: 16px !important;
+}
+
+.help-modal ul {
+  list-style-type: disc !important;
+  padding-left: 20px !important;
+  color: var(--text-secondary) !important;
+}
+
+.help-modal a {
+  color: var(--team-accent-2) !important;
+  text-decoration: none !important;
+  font-weight: 600 !important;
+}
+
+.help-modal a:hover {
+  text-decoration: underline !important;
+  color: var(--team-accent) !important;
 }
