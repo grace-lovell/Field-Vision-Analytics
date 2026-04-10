@@ -49,7 +49,7 @@ pairs(nfl_numeric, col = cols)
 
 ```{r}
 correlations <- cor(nfl_numeric)
-corrplot(correlations)
+corrplot(correlations, type = "lower", addCoef.col = "black", number.cex = 0.7)
 ```
 
 ```{r}
