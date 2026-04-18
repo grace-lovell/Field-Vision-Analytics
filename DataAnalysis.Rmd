@@ -126,7 +126,7 @@ nfl_test <- anti_join(nfl_clean, nfl_train)
 
 ```{r}
 nfl_tree <- rpart(Win_Loss ~ ., data = nfl_train)
-rpart.plot(nfl_tree, tweak = 1, faclen = 4, box.palette = "Reds")
+rpart.plot(nfl_tree, tweak = 1, faclen = 4, box.palette = "RdGn")
 nfl_tree
 ```
 
