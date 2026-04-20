@@ -722,7 +722,7 @@ server <- function(input, output, session) {
     df <- cbind("Row #" = 1:nrow(df), df)
     
     df
-  }, options = list(paging = FALSE, scrollX = TRUE, scrollY = "800px"), rownames = FALSE)
+  }, options = list(paging = FALSE, scrollX = TRUE, scrollY = "600px"), rownames = FALSE)
   
   # -------------------------
   # RUSHING & RECEIVING TABLE
@@ -763,7 +763,7 @@ server <- function(input, output, session) {
     df <- cbind("Row #" = 1:nrow(df), df)
     
     df
-  }, options = list(paging = FALSE, scrollX = TRUE, scrollY = "800px"), rownames = FALSE)
+  }, options = list(paging = FALSE, scrollX = TRUE, scrollY = "600px"), rownames = FALSE)
   
   # -------------------------
   # DEFENSE TABLE
@@ -820,7 +820,7 @@ server <- function(input, output, session) {
     df <- cbind("Row #" = 1:nrow(df), df)
     
     df
-  }, options = list(paging = FALSE, scrollX = TRUE, scrollY = "800px"), rownames = FALSE)
+  }, options = list(paging = FALSE, scrollX = TRUE, scrollY = "600px"), rownames = FALSE)
 
   # -------------------------
   # SPECIAL TEAMS TABLE
@@ -869,7 +869,7 @@ server <- function(input, output, session) {
     df <- cbind("Row #" = 1:nrow(df), df)
     
     df
-  }, options = list(paging = FALSE, scrollX = TRUE, scrollY = "800px"), rownames = FALSE)
+  }, options = list(paging = FALSE, scrollX = TRUE, scrollY = "600px"), rownames = FALSE)
   
   # -------------------------
   # ROSTER TABLE
@@ -897,7 +897,7 @@ server <- function(input, output, session) {
     df <- cbind("Row #" = 1:nrow(df), df)
     
     df
-  }, options = list(paging = FALSE, scrollX = TRUE, scrollY = "800px"), rownames = FALSE)
+  }, options = list(paging = FALSE, scrollX = TRUE, scrollY = "600px"), rownames = FALSE)
   
   # -------------------------
   # SCHEDULE TABLE
@@ -937,7 +937,7 @@ server <- function(input, output, session) {
     }
     
     df
-  }, options = list(paging = FALSE, scrollX = TRUE, scrollY = "800px"), rownames = FALSE)
+  }, options = list(paging = FALSE, scrollX = TRUE, scrollY = "600px"), rownames = FALSE)
   
   output$pageContent <- renderUI({
     
