@@ -142,7 +142,7 @@ server <- function(input, output, session) {
         tags$div(class = "zone-header",
           tags$div(class = "zone-icon", "🛡️"),
           tags$div(class = "zone-meta",
-            tags$div(class = "zone-title", "Defensive Stats"),
+            tags$div(class = "zone-title", "Defense"),
             tags$div(class = "zone-desc", "Tackles, Sacks, Interceptions, and Forced Fumbles")
           )
         ),
