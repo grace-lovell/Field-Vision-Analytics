@@ -278,7 +278,7 @@ server <- function(input, output, session) {
                tags$div(class = "leaders-unit-title", unit),
                actionButton("visual_next", "→", class = "btn btn-ghost")
       ),
-      plotlyOutput("active_visual", height = "1000px")
+      plotlyOutput("active_visual", height = "600px")
     )
   })
   
