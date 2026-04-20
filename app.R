@@ -587,10 +587,12 @@ server <- function(input, output, session) {
     tags$span(format(total, big.mark = ","))
   })
   
-  output$total_receive_yards <- renderUI({
+  output$total_yards <- renderUI({
+    req(input$passing_file)
     req(input$rushing_receiving_file)
-    df <- read.csv(input$rushing_receiving_file$datapath)
-    total <- sum(df$Reception.Yards, na.rm = TRUE)
+    pass <- read.csv(input$passing_file$datapath)
+    rush <- read.csv(input$rushing_receiving_file$datapath)
+    total <- sum(pass$Yards, na.rm = TRUE) + sum(rush$Rushing.Yards, na.rm = TRUE)
     tags$span(format(total, big.mark = ","))
   })
   
@@ -608,10 +610,12 @@ server <- function(input, output, session) {
     tags$span(format(total, big.mark = ","))
   })
   
-  output$total_receive_tds <- renderUI({
+  output$total_tds <- renderUI({
+    req(input$passing_file)
     req(input$rushing_receiving_file)
-    df <- read.csv(input$rushing_receiving_file$datapath)
-    total <- sum(df$Receiving.Touchdowns, na.rm = TRUE)
+    pass <- read.csv(input$passing_file$datapath)
+    rush <- read.csv(input$rushing_receiving_file$datapath)
+    total <- sum(pass$Touchdowns, na.rm = TRUE) + sum(rush$Rushing.Touchdowns, na.rm = TRUE)
     tags$span(format(total, big.mark = ","))
   })
   
@@ -1111,8 +1115,8 @@ server <- function(input, output, session) {
                   tags$div(class = "stat-value", uiOutput("total_rush_yards"))
                 ),
                 tags$div(class = "stat-card",
-                  tags$div(class = "stat-label", "Total Receiving Yards"),
-                  tags$div(class = "stat-value", uiOutput("total_receive_yards"))
+                  tags$div(class = "stat-label", "Total Yards"),
+                  tags$div(class = "stat-value", uiOutput("total_yards"))
                 ),
                 tags$div(class = "stat-card",
                   tags$div(class = "stat-label", "Total Passing Touchdowns"),
@@ -1123,8 +1127,8 @@ server <- function(input, output, session) {
                   tags$div(class = "stat-value", uiOutput("total_rush_tds"))
                 ),
                 tags$div(class = "stat-card",
-                  tags$div(class = "stat-label", "Total Receiving Touchdowns"),
-                  tags$div(class = "stat-value", uiOutput("total_receive_tds"))
+                  tags$div(class = "stat-label", "Total Touchdowns"),
+                  tags$div(class = "stat-value", uiOutput("total_tds"))
                 )
               ),
               tags$div(class = "section-label", "Passing Data"),
