@@ -1,6 +1,5 @@
 /* ==========================================================
-   FIELD VISION ANALYTICS — FULL STYLESHEET
-   Save as: www/styles.css in your Shiny project
+   FIELD VISION ANALYTICS STYLESHEET
    ========================================================== */
 
 /* ----------------------------------------------------------
@@ -100,8 +99,7 @@ body::before {
   box-shadow: 0 2px 20px rgba(0,0,0,0.6);
 }
 
-.logo-area,
-.dash-header .logo-area {
+.logo-area {
   display: flex; align-items: center; gap: 14px;
 }
 
@@ -280,34 +278,8 @@ body::before {
   margin-bottom: 6px;
 }
 
-.stat-delta {
-  font-size: 12px; font-weight: 500;
-  display: inline-flex; align-items: center; gap: 4px;
-  padding: 2px 8px;
-  border-radius: 20px;
-}
-.stat-delta.up   { background: rgba(39,174,96,0.15);   color: #4ade80; }
-.stat-delta.down { background: rgba(192,57,43,0.15);   color: #f87171; }
-.stat-delta.flat { background: rgba(255,255,255,0.06); color: var(--text-secondary); }
-
 /* ----------------------------------------------------------
-   8. CONTENT GRIDS
-   ---------------------------------------------------------- */
-.content-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  margin-bottom: 24px;
-}
-.content-grid.thirds { grid-template-columns: 2fr 1fr; }
-
-@media (max-width: 1100px) {
-  .content-grid,
-  .content-grid.thirds { grid-template-columns: 1fr; }
-}
-
-/* ----------------------------------------------------------
-   9. PANEL CARDS
+   8. PANEL CARDS
    ---------------------------------------------------------- */
 .panel-card {
   background: var(--bg-card);
@@ -346,132 +318,13 @@ body::before {
   border-radius: 20px; padding: 3px 10px;
 }
 
-.chart-placeholder {
-  width: 100%; background: var(--bg-dark);
-  border: 1px dashed var(--border);
-  border-radius: var(--radius-sm);
-  display: flex; align-items: center; justify-content: center;
-  color: var(--text-muted);
-  font-size: 13px; letter-spacing: 1px; text-transform: uppercase;
-  font-family: 'Barlow Condensed', sans-serif;
-}
-
 /* ----------------------------------------------------------
-   10. UNIT RATING RINGS
-   ---------------------------------------------------------- */
-.ratings-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  margin-bottom: 24px;
-}
-@media (max-width: 900px) { .ratings-grid { grid-template-columns: 1fr; } }
-
-.rating-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 24px;
-  text-align: center;
-  position: relative; overflow: hidden;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-.rating-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-card); }
-
-.rating-card .unit-label {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 13px; font-weight: 700;
-  letter-spacing: 3px; text-transform: uppercase;
-  color: var(--text-secondary);
-  margin-bottom: 12px;
-}
-
-.rating-ring {
-  width: 100px; height: 100px;
-  margin: 0 auto 14px;
-  border-radius: 50%;
-  background: conic-gradient(
-    var(--ring-color, var(--team-accent)) calc(var(--pct, 75) * 1%),
-    var(--bg-dark) 0
-  );
-  display: flex; align-items: center; justify-content: center;
-  position: relative;
-}
-.rating-ring::before {
-  content: '';
-  position: absolute; inset: 12px;
-  background: var(--bg-card);
-  border-radius: 50%;
-}
-.rating-ring .ring-value {
-  position: relative; z-index: 1;
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 28px; font-weight: 800;
-  color: var(--text-primary);
-}
-
-.rating-card .rank-line {
-  font-size: 12px; color: var(--text-secondary); letter-spacing: 1px;
-}
-.rating-card .rank-line strong { color: var(--team-accent); }
-
-.rating-card.offense { --ring-color: #e8a020; }
-.rating-card.defense { --ring-color: #c0392b; }
-.rating-card.special { --ring-color: #27ae60; }
-
-.rating-card::after {
-  content: '';
-  position: absolute; bottom: 0; left: 0; right: 0;
-  height: 3px;
-}
-.rating-card.offense::after { background: linear-gradient(90deg, transparent, #e8a020, transparent); }
-.rating-card.defense::after { background: linear-gradient(90deg, transparent, #c0392b, transparent); }
-.rating-card.special::after { background: linear-gradient(90deg, transparent, #27ae60, transparent); }
-
-/* ----------------------------------------------------------
-   11. DATA TABLE
+   9. DATA TABLE
    ---------------------------------------------------------- */
 .data-table-wrap { overflow-x: auto; }
 
-table.dash-table {
-  width: 100%; border-collapse: collapse; font-size: 13px;
-}
-table.dash-table thead th {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 11px; font-weight: 700;
-  letter-spacing: 2px; text-transform: uppercase;
-  color: var(--text-secondary);
-  padding: 10px 14px;
-  background: rgba(255,255,255,0.03);
-  border-bottom: 1px solid var(--border);
-  text-align: left; white-space: nowrap;
-}
-table.dash-table tbody tr {
-  border-bottom: 1px solid var(--border);
-  transition: background 0.15s;
-}
-table.dash-table tbody tr:last-child { border-bottom: none; }
-table.dash-table tbody tr:hover { background: rgba(255,255,255,0.04); }
-table.dash-table tbody td {
-  padding: 11px 14px;
-  color: var(--text-primary);
-  white-space: nowrap;
-}
-table.dash-table tbody td:first-child { font-weight: 600; }
-
-.pill {
-  display: inline-block;
-  padding: 2px 10px;
-  border-radius: 20px;
-  font-size: 11px; font-weight: 600; letter-spacing: 0.5px;
-}
-.pill-gold  { background: rgba(232,160,32,0.15); color: var(--team-accent); }
-.pill-red   { background: rgba(192,57,43,0.15);  color: #f87171; }
-.pill-green { background: rgba(39,174,96,0.15);  color: #4ade80; }
-.pill-blue  { background: rgba(52,152,219,0.15); color: #60a5fa; }
-
 /* ----------------------------------------------------------
-   12. WELCOME / UPLOAD PAGE
+   10. WELCOME / UPLOAD PAGE
    ---------------------------------------------------------- */
 
 .bg-glow {
@@ -561,7 +414,7 @@ table.dash-table tbody td:first-child { font-weight: 600; }
 }
 
 /* ----------------------------------------------------------
-   13. UPLOAD GRID & ZONES
+   11. UPLOAD GRID & ZONES
    ---------------------------------------------------------- */
 .upload-grid {
   display: grid;
@@ -637,15 +490,15 @@ table.dash-table tbody td:first-child { font-weight: 600; }
 }
 
 /* ----------------------------------------------------------
-   14. DROP AREA & fileInput() STYLING
+   12. DROP AREA & FILE INPUT
    ---------------------------------------------------------- */
 .drop-area {
   flex: 1;
   border: 1.5px dashed rgba(30, 144, 255, 0.06);
   border-radius: var(--radius-md);
-  padding: 4px;
+  padding: 8px;
   cursor: pointer;
-  transition: border-color 0.2s, background 0.2s;
+  transition: 0.2s ease;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -657,110 +510,72 @@ table.dash-table tbody td:first-child { font-weight: 600; }
   background: rgba(30, 144, 255, 0.06);
 }
 
-/* Hide Shiny's default filename text box */
-.drop-area .form-control {
-  display: none !important;
-}
-
-/* Remove default spacing from Shiny's containers */
-.drop-area .form-group,
 .drop-area .shiny-input-container {
-  margin: 0 !important;
-  padding: 0 !important;
-  width: 100% !important;
+  margin: 0;
+  padding: 0;
+  width: 100%;
 }
 
-/* Style the x button */
+.drop-area .form-control,
+.drop-area .shiny-label-null,
+.drop-area .progress.shiny-file-input-progress {
+  display: none;
+}
+
 .drop-area .btn-file {
-  display: block !important;
-  width: 100% !important;
-  padding: 16px 20px !important;
-  background: transparent !important;
-  border: none !important;
-  border-radius: var(--radius-md) !important;
-  color: var(--text-secondary) !important;
-  font-family: 'Barlow Condensed', sans-serif !important;
-  font-size: 13px !important;
-  font-weight: 700 !important;
-  letter-spacing: 1.5px !important;
-  text-transform: uppercase !important;
-  text-align: center !important;
-  cursor: pointer !important;
-  transition: all 0.2s !important;
-  box-shadow: none !important;
-  box-sizing: border-box !important;
+  display: block;
+  width: 100%;
+  padding: 16px 20px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .drop-area .btn-file:hover {
-  color: var(--team-accent-2) !important;
-  background: rgba(192,57,43,0.06) !important;
-  transform: translateY(-1px) !important;
+  color: var(--team-accent-2);
+  background: rgba(192, 57, 43, 0.06);
+  transform: translateY(-1px);
 }
 
-/* Success state after file selected */
-.shiny-input-container.shiny-input-file-done .btn-file {
-  color: #4ade80 !important;
-  background: rgba(39,174,96,0.06) !important;
-}
-
-/* Collapse the input-group row */
-.drop-area .input-group {
-  display: block !important;
-  width: 100% !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-/* Collapse the label wrapper around the button */
+.drop-area .input-group,
 .drop-area .input-group-btn,
 .drop-area .input-group-prepend {
-  display: block !important;
-  width: 100% !important;
-  height: auto !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  vertical-align: unset !important;
-  white-space: normal !important;
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  white-space: normal;
 }
 
-/* Hide the progress bar */
-.drop-area .progress.shiny-file-input-progress {
-  display: none !important;
+.upload-zone.upload-zone--success .input-group {
+  border: 1px solid rgba(39, 174, 96, 0.4);
+  border-radius: var(--radius-md);
+  background: rgba(39, 174, 96, 0.05);
+  transition: 0.3s ease;
 }
 
-/* Hide the empty label Shiny generates */
-.drop-area .shiny-label-null {
-  display: none !important;
+.upload-zone.upload-zone--success .btn-file {
+  color: #4ade80;
+  background: rgba(39, 174, 96, 0.06);
 }
 
-/* ---- SUCCESS STATE ---- */
-
-/* Green border + background on the input-group box */
-.shiny-input-container.shiny-input-file-done .input-group {
-  border: 1px solid rgba(39,174,96,0.4) !important;
-  border-radius: var(--radius-md) !important;
-  background: rgba(39,174,96,0.05) !important;
-  transition: all 0.3s !important;
-}
-
-/* Checkmark prepended to button text */
-.shiny-input-container.shiny-input-file-done .btn-file::before {
-  content: '✓  ';
+.upload-zone.upload-zone--success .btn-file::before {
+  content: "✓ ";
   color: #4ade80;
 }
 
-/* Green top stripe on the zone card */
-.upload-zone:has(.shiny-input-file-done)::before {
-  background: linear-gradient(90deg, #27ae60, transparent) !important;
-}
-
-/* Green border glow on the zone card */
-.upload-zone:has(.shiny-input-file-done) {
-  border-color: rgba(39,174,96,0.3) !important;
-}
-
 /* ----------------------------------------------------------
-   15. ACTION ROW
+   13. ACTION ROW
    ---------------------------------------------------------- */
 .action-row {
   display: flex; align-items: center; justify-content: space-between;
@@ -793,7 +608,7 @@ table.dash-table tbody td:first-child { font-weight: 600; }
 .action-btns { display: flex; gap: 10px; flex-shrink: 0; }
 
 /* ----------------------------------------------------------
-   16. DASHBOARD BODY
+   14. DASHBOARD BODY
    ---------------------------------------------------------- */
 .dash-body {
   position: relative; z-index: 1;
@@ -803,9 +618,8 @@ table.dash-table tbody td:first-child { font-weight: 600; }
 }
 
 /* ----------------------------------------------------------
-   17. SHINY TAB OVERRIDES
+   15. SHINY TAB OVERRIDES
    ---------------------------------------------------------- */
-
 .container-fluid {
   padding: 0 !important;
 }
@@ -864,7 +678,6 @@ table.dash-table tbody td:first-child { font-weight: 600; }
   border: none !important;
 }
 
-/* Uploaded file name display */
 .file-name {
   margin-top: 8px;
   font-size: 12px;
@@ -876,7 +689,7 @@ table.dash-table tbody td:first-child { font-weight: 600; }
 }
 
 /* ----------------------------------------------------------
-   18. FILTER GRID
+   16. FILTER GRID
    ---------------------------------------------------------- */
 .filter-grid {
   display: grid;
@@ -914,7 +727,7 @@ table.dash-table tbody td:first-child { font-weight: 600; }
 }
 
 /* ----------------------------------------------------------
-   19. DT TABLE DARK THEME
+   17. DT TABLE DARK THEME
    ---------------------------------------------------------- */
 .dataTables_wrapper {
   color: var(--text-primary) !important;
@@ -952,7 +765,6 @@ table.dash-table tbody td:first-child { font-weight: 600; }
   padding: 10px 14px !important;
 }
 
-/* Pagination buttons */
 .dataTables_paginate .paginate_button {
   background: transparent !important;
   color: var(--text-muted) !important;
@@ -973,24 +785,20 @@ table.dash-table tbody td:first-child { font-weight: 600; }
   color: var(--text-primary) !important;
 }
 
-/* Row count info */
 .dataTables_info {
   color: var(--text-muted) !important;
   font-size: 12px !important;
   font-family: 'Barlow Condensed', sans-serif !important;
 }
 
-/* Hide DT's built-in search since you have your own */
 .dataTables_filter {
   display: none !important;
 }
 
-/* Hide entries length selector */
 .dataTables_length {
   display: none !important;
 }
 
-/* Sort arrows */
 .dataTables_wrapper table.dataTable thead .sorting::after,
 .dataTables_wrapper table.dataTable thead .sorting_asc::after,
 .dataTables_wrapper table.dataTable thead .sorting_desc::after {
@@ -998,7 +806,7 @@ table.dash-table tbody td:first-child { font-weight: 600; }
 }
 
 /* ----------------------------------------------------------
-   20. TEAM LEADERS
+   18. TEAM LEADERS
    ---------------------------------------------------------- */
 .leaders-header {
   display: flex;
@@ -1051,58 +859,58 @@ table.dash-table tbody td:first-child { font-weight: 600; }
 }
 
 /* ----------------------------------------------------------
-   21. HELP SCREEN MODAL
+   19. HELP SCREEN MODAL
    ---------------------------------------------------------- */
 .help-modal .modal-content {
-  background: var(--bg-card) !important;
-  color: var(--text-primary) !important;
-  border-radius: var(--radius-lg) !important;
-  border: 1px solid var(--border-accent) !important;
-  font-family: 'Barlow', sans-serif !important;
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-accent);
+  font-family: 'Barlow', sans-serif;
 }
 
 .help-modal .modal-header {
-  border-bottom: 1px solid var(--border) !important;
-  background: var(--bg-card) !important;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-card);
 }
 
 .help-modal .modal-title {
-  color: var(--team-primary) !important;
-  font-family: 'Barlow Condensed', sans-serif !important;
-  font-weight: 700 !important;
-  letter-spacing: 1px !important;
-  text-transform: uppercase !important;
+  color: var(--team-primary);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
 }
 
 .help-modal .modal-body {
-  background: var(--bg-card) !important;
-  padding: 24px !important;
+  padding: 24px;
 }
 
 .help-modal .modal-footer {
-  background: var(--bg-card) !important;
-  border-top: 1px solid var(--border) !important;
+  background: var(--bg-card);
+  border-top: 1px solid var(--border);
 }
 
 .help-modal p {
-  color: var(--team-accent) !important;
-  font-weight: 800 !important;
-  margin-bottom: 16px !important;
+  color: var(--team-accent);
+  font-weight: 700;
+  margin-bottom: 16px;
 }
 
 .help-modal ul {
-  list-style-type: disc !important;
-  padding-left: 20px !important;
-  color: var(--text-secondary) !important;
+  list-style-type: disc;
+  padding-left: 20px;
+  color: var(--text-secondary);
 }
 
 .help-modal a {
-  color: var(--team-accent-2) !important;
-  text-decoration: none !important;
-  font-weight: 600 !important;
+  color: var(--team-accent-2);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease;
 }
 
 .help-modal a:hover {
-  text-decoration: underline !important;
-  color: var(--team-accent) !important;
+  text-decoration: underline;
+  color: var(--team-accent);
 }
